@@ -1,0 +1,19 @@
+aid: project44
+url: https://raw.githubusercontent.com/api-evangelist/project44/refs/heads/main/apis.yml
+apis:
+- aid: project44:project44-api
+  name: project44 Freight Visibility API
+  tags:
+  - Logistics
+  - Freight
+  - Visibility
+  - Tracking
+  - Supply Chain
+  image: https://raw.githubusercontent.com/api-evangelist/project44/refs/heads/main/image.png
+  humanURL: https://www.project44.com/
+  baseURL: https://api.project44.com
+  properties:
+  - url: https://www.project44.com/
+    type: Documentation
+  description: >-
+    project44 provides real-time freight visibility APIs for supply chain operations. APIs deliver multimodal shipment tracking, predictive ETA calculations, exception alerting, and carrier performance analytics across truckload, LTL, ocean, rail, and parcel modes.
