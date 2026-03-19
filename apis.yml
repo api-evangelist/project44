@@ -16,6 +16,10 @@ apis:
   properties:
   - url: https://www.project44.com/
     type: Documentation
+  - url: openapi/project44-tracking-openapi.yml
+    type: OpenAPI
+  - url: asyncapi/project44-shipment-events-asyncapi.yml
+    type: AsyncAPI
   description: >-
     project44 Tracking API provides real-time shipment tracking and visibility for multimodal freight including truckload, LTL, ocean, rail, air, and parcel. APIs deliver shipment status updates, predictive ETAs, and exception alerts.
 
@@ -98,6 +102,14 @@ common:
   type: PrivacyPolicy
 - url: https://github.com/project44
   type: GitHubOrganization
+- url: openapi/project44-tracking-openapi.yml
+  type: OpenAPI
+- url: asyncapi/project44-shipment-events-asyncapi.yml
+  type: AsyncAPI
+- url: json-schema/project44-shipment-schema.json
+  type: JSONSchema
+- url: json-ld/project44-context.jsonld
+  type: JSONLDContext
 maintainers:
 - name: Kin Lane
   email: kin@apievangelist.com

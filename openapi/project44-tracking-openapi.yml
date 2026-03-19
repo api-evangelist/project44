@@ -1,0 +1,632 @@
+openapi: 3.1.0
+info:
+  title: project44 Tracking API
+  description: >-
+    project44 Tracking API provides real-time shipment tracking and visibility for
+    multimodal freight including truckload (TL), LTL, ocean, rail, air, and parcel.
+    APIs deliver shipment status updates, predictive ETAs, and exception alerts.
+  version: 2.0.0
+  contact:
+    name: project44 Support
+    url: https://support.project44.com
+  license:
+    name: project44 Terms of Service
+    url: https://www.project44.com/legal/
+servers:
+  - url: https://api.project44.com/api/v4
+    description: project44 Production API
+
+security:
+  - oauth2: []
+
+tags:
+  - name: Shipments
+    description: Shipment tracking and management
+  - name: Status
+    description: Shipment status updates
+  - name: Tracking
+    description: Real-time position and event tracking
+  - name: ETA
+    description: ETA predictions and calculations
+  - name: Webhooks
+    description: Webhook subscription management
+
+paths:
+  /shipments:
+    post:
+      operationId: createShipment
+      summary: Create a tracked shipment
+      description: Creates a new shipment to track, associating it with carrier and identifier information.
+      tags:
+        - Shipments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShipmentCreate'
+      responses:
+        '201':
+          description: Shipment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shipment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      operationId: listShipments
+      summary: List tracked shipments
+      description: Returns a paginated list of tracked shipments with current status.
+      tags:
+        - Shipments
+      parameters:
+        - name: status
+          in: query
+          description: Filter by shipment lifecycle status
+          schema:
+            type: string
+            enum: [AT_STOP, IN_TRANSIT, COMPLETED, EXCEPTION, UNKNOWN]
+        - name: mode
+          in: query
+          description: Transportation mode filter
+          schema:
+            type: string
+            enum: [TL, LTL, OCEAN, AIR, RAIL, PARCEL, DRAY]
+        - name: carrierId
+          in: query
+          description: Carrier SCAC code or project44 carrier ID
+          schema:
+            type: string
+        - name: updatedSince
+          in: query
+          description: Return shipments updated after this ISO 8601 timestamp
+          schema:
+            type: string
+            format: date-time
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+      responses:
+        '200':
+          description: Shipment list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shipment'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /shipments/{shipmentId}:
+    get:
+      operationId: getShipment
+      summary: Get a shipment
+      description: Returns current status, position, ETA, and event history for a shipment.
+      tags:
+        - Shipments
+      parameters:
+        - $ref: '#/components/parameters/ShipmentId'
+      responses:
+        '200':
+          description: Shipment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteShipment
+      summary: Stop tracking a shipment
+      description: Removes a shipment from active tracking.
+      tags:
+        - Shipments
+      parameters:
+        - $ref: '#/components/parameters/ShipmentId'
+      responses:
+        '204':
+          description: Shipment deleted
+
+  /shipments/{shipmentId}/status-updates:
+    get:
+      operationId: getShipmentStatusUpdates
+      summary: Get shipment status updates
+      description: Returns the timeline of status updates and events for a shipment.
+      tags:
+        - Status
+      parameters:
+        - $ref: '#/components/parameters/ShipmentId'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Status update history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusUpdates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusUpdate'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /shipments/{shipmentId}/positions:
+    get:
+      operationId: getShipmentPositions
+      summary: Get shipment position history
+      description: Returns GPS position history for a shipment.
+      tags:
+        - Tracking
+      parameters:
+        - $ref: '#/components/parameters/ShipmentId'
+        - name: startTime
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: endTime
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Position history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  positions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Position'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /webhooks/subscriptions:
+    get:
+      operationId: listWebhookSubscriptions
+      summary: List webhook subscriptions
+      description: Returns all active webhook subscriptions for the authenticated account.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Webhook subscription list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WebhookSubscription'
+    post:
+      operationId: createWebhookSubscription
+      summary: Create webhook subscription
+      description: Creates a new webhook subscription to receive shipment event notifications.
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookSubscriptionCreate'
+      responses:
+        '201':
+          description: Subscription created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /webhooks/subscriptions/{subscriptionId}:
+    delete:
+      operationId: deleteWebhookSubscription
+      summary: Delete webhook subscription
+      description: Removes an active webhook subscription.
+      tags:
+        - Webhooks
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Subscription deleted
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.project44.com/api/v4/oauth2/token
+          scopes:
+            tracking.read: Read shipment tracking data
+            tracking.write: Create and manage shipments
+            webhooks.write: Manage webhook subscriptions
+
+  parameters:
+    ShipmentId:
+      name: shipmentId
+      in: path
+      required: true
+      description: project44 shipment identifier
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Shipment:
+      type: object
+      description: A tracked freight shipment
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: project44 internal shipment ID
+        masterShipmentId:
+          type: string
+          description: Unique master shipment ID across modes
+        mode:
+          type: string
+          enum: [TL, LTL, OCEAN, AIR, RAIL, PARCEL, DRAY]
+        status:
+          type: string
+          enum: [AT_STOP, IN_TRANSIT, COMPLETED, EXCEPTION, UNKNOWN]
+        carrierCode:
+          type: string
+          description: Carrier SCAC code
+        carrierName:
+          type: string
+        proNumber:
+          type: string
+          description: PRO/tracking number
+        bolNumber:
+          type: string
+          description: Bill of lading number
+        poNumber:
+          type: string
+          description: Purchase order number
+        origin:
+          $ref: '#/components/schemas/ShipmentStop'
+        destination:
+          $ref: '#/components/schemas/ShipmentStop'
+        estimatedDelivery:
+          $ref: '#/components/schemas/ETAWindow'
+        currentPosition:
+          $ref: '#/components/schemas/Position'
+        exceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentException'
+        createDatetime:
+          type: string
+          format: date-time
+        lastUpdateDatetime:
+          type: string
+          format: date-time
+
+    ShipmentCreate:
+      type: object
+      required:
+        - mode
+        - carrierCode
+        - identifiers
+      properties:
+        mode:
+          type: string
+          enum: [TL, LTL, OCEAN, AIR, RAIL, PARCEL, DRAY]
+        carrierCode:
+          type: string
+          description: SCAC code
+        identifiers:
+          type: array
+          description: At least one tracking identifier required
+          items:
+            type: object
+            required:
+              - type
+              - value
+            properties:
+              type:
+                type: string
+                enum: [PRO, BOL, PO, TRACKING_NUMBER, CONTAINER_NUMBER, BOOKING_NUMBER]
+              value:
+                type: string
+        stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentStopInput'
+
+    ShipmentDetail:
+      allOf:
+        - $ref: '#/components/schemas/Shipment'
+        - type: object
+          properties:
+            stops:
+              type: array
+              items:
+                $ref: '#/components/schemas/ShipmentStop'
+            statusUpdates:
+              type: array
+              items:
+                $ref: '#/components/schemas/StatusUpdate'
+
+    ShipmentStop:
+      type: object
+      properties:
+        stopNumber:
+          type: integer
+        stopType:
+          type: string
+          enum: [ORIGIN, DESTINATION, INTERMEDIATE]
+        name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        appointmentWindow:
+          $ref: '#/components/schemas/TimeWindow'
+        actualArrival:
+          type: string
+          format: date-time
+          nullable: true
+        actualDeparture:
+          type: string
+          format: date-time
+          nullable: true
+
+    ShipmentStopInput:
+      type: object
+      required:
+        - stopNumber
+        - stopType
+      properties:
+        stopNumber:
+          type: integer
+        stopType:
+          type: string
+          enum: [ORIGIN, DESTINATION, INTERMEDIATE]
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        appointmentWindow:
+          $ref: '#/components/schemas/TimeWindow'
+
+    StatusUpdate:
+      type: object
+      properties:
+        updateId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        statusCode:
+          type: string
+        statusDescription:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        isException:
+          type: boolean
+        exceptionCode:
+          type: string
+          nullable: true
+        source:
+          type: string
+          enum: [CARRIER_EDI, CARRIER_API, TELEMATICS, MANUAL]
+
+    Position:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        heading:
+          type: number
+          format: double
+          nullable: true
+        speed:
+          type: number
+          format: double
+          nullable: true
+        speedUnit:
+          type: string
+          enum: [MPH, KPH]
+
+    ETAWindow:
+      type: object
+      properties:
+        estimatedAt:
+          type: string
+          format: date-time
+        confidenceLow:
+          type: string
+          format: date-time
+        confidenceHigh:
+          type: string
+          format: date-time
+        predictedOnTime:
+          type: boolean
+        predictedLateMinutes:
+          type: integer
+          nullable: true
+
+    TimeWindow:
+      type: object
+      properties:
+        startDateTime:
+          type: string
+          format: date-time
+        endDateTime:
+          type: string
+          format: date-time
+
+    ShipmentException:
+      type: object
+      properties:
+        exceptionCode:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        timestamp:
+          type: string
+          format: date-time
+        resolvedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    WebhookSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        callbackUrl:
+          type: string
+          format: uri
+        eventTypes:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [ACTIVE, PAUSED, FAILED]
+        createDatetime:
+          type: string
+          format: date-time
+
+    WebhookSubscriptionCreate:
+      type: object
+      required:
+        - callbackUrl
+        - eventTypes
+      properties:
+        callbackUrl:
+          type: string
+          format: uri
+          description: HTTPS URL to receive event notifications
+        eventTypes:
+          type: array
+          description: Event types to subscribe to
+          items:
+            type: string
+            enum: [SHIPMENT_CREATED, STATUS_UPDATE, POSITION_UPDATE, ETA_CHANGE, EXCEPTION, COMPLETED]
+        secret:
+          type: string
+          description: HMAC secret for webhook signature verification
+
+    PageInfo:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+        hasNextPage:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object

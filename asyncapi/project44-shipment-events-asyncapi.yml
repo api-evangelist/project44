@@ -1,0 +1,314 @@
+asyncapi: 2.6.0
+info:
+  title: project44 Shipment Events API
+  version: 2.0.0
+  description: >-
+    project44 publishes real-time freight visibility events via webhooks.
+    Events include shipment status updates, position changes, ETA revisions,
+    and exception alerts across TL, LTL, ocean, air, and parcel modes.
+  contact:
+    name: project44 Support
+    url: https://support.project44.com
+  license:
+    name: project44 Terms of Service
+    url: https://www.project44.com/legal/
+
+servers:
+  project44-webhook:
+    url: https://your-endpoint.example.com/webhooks/project44
+    protocol: https
+    description: >-
+      Customer-provided HTTPS endpoint to receive project44 webhook events.
+      Register via the project44 Webhooks API.
+
+defaultContentType: application/json
+
+channels:
+  shipment/status-updated:
+    description: Event published when a shipment status changes
+    subscribe:
+      operationId: onShipmentStatusUpdated
+      summary: Shipment status updated event
+      description: >-
+        Triggered when a new status update is received for a tracked shipment
+        from carrier EDI, carrier API, or telematics providers.
+      tags:
+        - name: Shipments
+      message:
+        $ref: '#/components/messages/ShipmentStatusUpdatedEvent'
+
+  shipment/position-updated:
+    description: Event published when a shipment GPS position is updated
+    subscribe:
+      operationId: onShipmentPositionUpdated
+      summary: Shipment position updated event
+      description: Triggered periodically when a new GPS position is received from a telematics provider.
+      tags:
+        - name: Tracking
+      message:
+        $ref: '#/components/messages/ShipmentPositionUpdatedEvent'
+
+  shipment/eta-changed:
+    description: Event published when the predicted delivery ETA changes
+    subscribe:
+      operationId: onShipmentEtaChanged
+      summary: Shipment ETA changed event
+      description: >-
+        Triggered when the machine-learning ETA prediction changes significantly
+        (typically by more than 30 minutes from previous prediction).
+      tags:
+        - name: ETA
+      message:
+        $ref: '#/components/messages/ShipmentEtaChangedEvent'
+
+  shipment/exception:
+    description: Event published when a shipment exception is detected
+    subscribe:
+      operationId: onShipmentException
+      summary: Shipment exception event
+      description: >-
+        Triggered when a delay, missed stop, delivery attempt failure, or other
+        exception condition is detected on the shipment.
+      tags:
+        - name: Shipments
+      message:
+        $ref: '#/components/messages/ShipmentExceptionEvent'
+
+  shipment/completed:
+    description: Event published when a shipment delivery is confirmed
+    subscribe:
+      operationId: onShipmentCompleted
+      summary: Shipment completed (delivered) event
+      description: Triggered when the shipment is confirmed as delivered.
+      tags:
+        - name: Shipments
+      message:
+        $ref: '#/components/messages/ShipmentCompletedEvent'
+
+components:
+  messages:
+    ShipmentStatusUpdatedEvent:
+      name: ShipmentStatusUpdated
+      title: Shipment Status Updated
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          x-p44-event-id:
+            type: string
+            format: uuid
+          x-p44-event-type:
+            type: string
+            const: shipment.status-updated
+          x-p44-signature:
+            type: string
+            description: HMAC-SHA256 signature for payload verification
+      payload:
+        $ref: '#/components/schemas/ShipmentStatusUpdatedPayload'
+
+    ShipmentPositionUpdatedEvent:
+      name: ShipmentPositionUpdated
+      title: Shipment Position Updated
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ShipmentPositionUpdatedPayload'
+
+    ShipmentEtaChangedEvent:
+      name: ShipmentEtaChanged
+      title: Shipment ETA Changed
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ShipmentEtaChangedPayload'
+
+    ShipmentExceptionEvent:
+      name: ShipmentException
+      title: Shipment Exception Detected
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ShipmentExceptionPayload'
+
+    ShipmentCompletedEvent:
+      name: ShipmentCompleted
+      title: Shipment Delivered
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ShipmentCompletedPayload'
+
+  schemas:
+    ShipmentStatusUpdatedPayload:
+      type: object
+      required:
+        - eventId
+        - eventTimestamp
+        - shipmentId
+        - statusCode
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventTimestamp:
+          type: string
+          format: date-time
+        shipmentId:
+          type: string
+          format: uuid
+        masterShipmentId:
+          type: string
+        mode:
+          type: string
+          enum: [TL, LTL, OCEAN, AIR, RAIL, PARCEL, DRAY]
+        carrierCode:
+          type: string
+        proNumber:
+          type: string
+        statusCode:
+          type: string
+        statusDescription:
+          type: string
+        statusTimestamp:
+          type: string
+          format: date-time
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        source:
+          type: string
+          enum: [CARRIER_EDI, CARRIER_API, TELEMATICS, MANUAL]
+
+    ShipmentPositionUpdatedPayload:
+      type: object
+      required:
+        - eventId
+        - eventTimestamp
+        - shipmentId
+        - position
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventTimestamp:
+          type: string
+          format: date-time
+        shipmentId:
+          type: string
+          format: uuid
+        masterShipmentId:
+          type: string
+        position:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+            latitude:
+              type: number
+              format: double
+            longitude:
+              type: number
+              format: double
+            heading:
+              type: number
+              format: double
+              nullable: true
+            speed:
+              type: number
+              format: double
+              nullable: true
+            speedUnit:
+              type: string
+              enum: [MPH, KPH]
+
+    ShipmentEtaChangedPayload:
+      type: object
+      required:
+        - eventId
+        - eventTimestamp
+        - shipmentId
+        - previousEta
+        - newEta
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventTimestamp:
+          type: string
+          format: date-time
+        shipmentId:
+          type: string
+          format: uuid
+        masterShipmentId:
+          type: string
+        previousEta:
+          type: string
+          format: date-time
+        newEta:
+          type: string
+          format: date-time
+        deltaMinutes:
+          type: integer
+          description: Change in ETA in minutes (positive = later, negative = earlier)
+        predictedOnTime:
+          type: boolean
+
+    ShipmentExceptionPayload:
+      type: object
+      required:
+        - eventId
+        - eventTimestamp
+        - shipmentId
+        - exceptionCode
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventTimestamp:
+          type: string
+          format: date-time
+        shipmentId:
+          type: string
+          format: uuid
+        masterShipmentId:
+          type: string
+        exceptionCode:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        estimatedImpactMinutes:
+          type: integer
+          nullable: true
+
+    ShipmentCompletedPayload:
+      type: object
+      required:
+        - eventId
+        - eventTimestamp
+        - shipmentId
+        - deliveryDatetime
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventTimestamp:
+          type: string
+          format: date-time
+        shipmentId:
+          type: string
+          format: uuid
+        masterShipmentId:
+          type: string
+        deliveryDatetime:
+          type: string
+          format: date-time
+        signedBy:
+          type: string
+          nullable: true
+        podAvailable:
+          type: boolean
+          description: Whether proof-of-delivery document is available

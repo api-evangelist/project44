@@ -1,0 +1,109 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "p44": "https://api.project44.com/vocab#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "wgs84": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+
+    "Shipment": {
+      "@id": "schema:ParcelDelivery",
+      "@type": "@id"
+    },
+    "id": {
+      "@id": "schema:identifier"
+    },
+    "masterShipmentId": {
+      "@id": "schema:orderNumber"
+    },
+    "mode": {
+      "@id": "schema:deliveryMethod"
+    },
+    "status": {
+      "@id": "schema:deliveryStatus"
+    },
+    "carrierCode": {
+      "@id": "p44:carrierScac"
+    },
+    "carrierName": {
+      "@id": "schema:provider"
+    },
+    "proNumber": {
+      "@id": "p44:proNumber"
+    },
+    "bolNumber": {
+      "@id": "p44:billOfLadingNumber"
+    },
+    "origin": {
+      "@id": "schema:originAddress"
+    },
+    "destination": {
+      "@id": "schema:deliveryAddress"
+    },
+    "estimatedDelivery": {
+      "@id": "schema:expectedArrivalFrom"
+    },
+
+    "ShipmentStop": {
+      "@id": "schema:Place",
+      "@type": "@id"
+    },
+    "city": {
+      "@id": "schema:addressLocality"
+    },
+    "state": {
+      "@id": "schema:addressRegion"
+    },
+    "postalCode": {
+      "@id": "schema:postalCode"
+    },
+    "country": {
+      "@id": "schema:addressCountry"
+    },
+    "latitude": {
+      "@id": "wgs84:lat",
+      "@type": "xsd:decimal"
+    },
+    "longitude": {
+      "@id": "wgs84:long",
+      "@type": "xsd:decimal"
+    },
+
+    "Position": {
+      "@id": "schema:GeoCoordinates",
+      "@type": "@id"
+    },
+    "timestamp": {
+      "@id": "schema:dateTime",
+      "@type": "xsd:dateTime"
+    },
+    "speed": {
+      "@id": "schema:speed",
+      "@type": "xsd:decimal"
+    },
+
+    "ETAWindow": {
+      "@id": "schema:DeliveryTimeSettings",
+      "@type": "@id"
+    },
+    "estimatedAt": {
+      "@id": "schema:expectedArrivalFrom",
+      "@type": "xsd:dateTime"
+    },
+    "predictedOnTime": {
+      "@id": "p44:predictedOnTime",
+      "@type": "xsd:boolean"
+    },
+
+    "ShipmentException": {
+      "@id": "schema:EventStatusType",
+      "@type": "@id"
+    },
+    "exceptionCode": {
+      "@id": "schema:identifier"
+    },
+    "severity": {
+      "@id": "p44:severity"
+    }
+  }
+}

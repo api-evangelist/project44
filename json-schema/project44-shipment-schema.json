@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/project44/json-schema/project44-shipment-schema.json",
+  "title": "project44 Shipment",
+  "description": "Schema for a project44 multimodal freight shipment with tracking and visibility data.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "project44 internal shipment UUID"
+    },
+    "masterShipmentId": {
+      "type": "string",
+      "description": "Unique master shipment identifier across modes"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["TL", "LTL", "OCEAN", "AIR", "RAIL", "PARCEL", "DRAY"],
+      "description": "Transportation mode"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["AT_STOP", "IN_TRANSIT", "COMPLETED", "EXCEPTION", "UNKNOWN"],
+      "description": "Current lifecycle status"
+    },
+    "carrierCode": {
+      "type": "string",
+      "description": "Carrier SCAC code"
+    },
+    "carrierName": {
+      "type": "string"
+    },
+    "proNumber": {
+      "type": "string",
+      "description": "Carrier PRO/tracking number"
+    },
+    "bolNumber": {
+      "type": "string",
+      "description": "Bill of lading number"
+    },
+    "poNumber": {
+      "type": "string",
+      "description": "Purchase order number"
+    },
+    "origin": {
+      "$ref": "#/$defs/ShipmentStop"
+    },
+    "destination": {
+      "$ref": "#/$defs/ShipmentStop"
+    },
+    "estimatedDelivery": {
+      "$ref": "#/$defs/ETAWindow"
+    },
+    "currentPosition": {
+      "$ref": "#/$defs/Position"
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ShipmentException"
+      }
+    },
+    "createDatetime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastUpdateDatetime": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["id", "mode", "status", "carrierCode"],
+  "$defs": {
+    "ShipmentStop": {
+      "type": "object",
+      "properties": {
+        "stopNumber": { "type": "integer" },
+        "stopType": { "type": "string", "enum": ["ORIGIN", "DESTINATION", "INTERMEDIATE"] },
+        "name": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "country": { "type": "string", "maxLength": 3 },
+        "latitude": { "type": "number", "format": "double" },
+        "longitude": { "type": "number", "format": "double" },
+        "actualArrival": { "type": ["string", "null"], "format": "date-time" },
+        "actualDeparture": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "ETAWindow": {
+      "type": "object",
+      "properties": {
+        "estimatedAt": { "type": "string", "format": "date-time" },
+        "confidenceLow": { "type": "string", "format": "date-time" },
+        "confidenceHigh": { "type": "string", "format": "date-time" },
+        "predictedOnTime": { "type": "boolean" },
+        "predictedLateMinutes": { "type": ["integer", "null"] }
+      }
+    },
+    "Position": {
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "latitude": { "type": "number", "format": "double" },
+        "longitude": { "type": "number", "format": "double" },
+        "heading": { "type": ["number", "null"], "format": "double" },
+        "speed": { "type": ["number", "null"], "format": "double" },
+        "speedUnit": { "type": "string", "enum": ["MPH", "KPH"] }
+      },
+      "required": ["timestamp", "latitude", "longitude"]
+    },
+    "ShipmentException": {
+      "type": "object",
+      "properties": {
+        "exceptionCode": { "type": "string" },
+        "description": { "type": "string" },
+        "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "resolvedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "f7a3b2c1-1234-5678-abcd-ef0123456789",
+      "masterShipmentId": "MSI-TL-2026031800001",
+      "mode": "TL",
+      "status": "IN_TRANSIT",
+      "carrierCode": "ODFL",
+      "carrierName": "Old Dominion Freight Line",
+      "proNumber": "ODFL-58712346",
+      "bolNumber": "BOL-202603180001",
+      "origin": {
+        "stopNumber": 1,
+        "stopType": "ORIGIN",
+        "city": "Chicago",
+        "state": "IL",
+        "postalCode": "60608",
+        "country": "USA"
+      },
+      "destination": {
+        "stopNumber": 2,
+        "stopType": "DESTINATION",
+        "city": "Atlanta",
+        "state": "GA",
+        "postalCode": "30303",
+        "country": "USA"
+      },
+      "estimatedDelivery": {
+        "estimatedAt": "2026-03-20T14:00:00Z",
+        "confidenceLow": "2026-03-20T12:00:00Z",
+        "confidenceHigh": "2026-03-20T17:00:00Z",
+        "predictedOnTime": true
+      }
+    }
+  ]
+}
