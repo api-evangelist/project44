@@ -26,8 +26,6 @@ tags:
     description: Shipment status updates
   - name: Tracking
     description: Real-time position and event tracking
-  - name: ETA
-    description: ETA predictions and calculations
   - name: Webhooks
     description: Webhook subscription management
 
