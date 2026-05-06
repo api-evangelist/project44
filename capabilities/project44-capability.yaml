@@ -1,0 +1,404 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: project44 Tracking API
+  description: project44 Tracking API provides real-time shipment tracking and visibility for multimodal freight including
+    truckload (TL), LTL, ocean, rail, air, and parcel. APIs deliver shipment status updates, predictive ETAs, and exception
+    alerts.
+  tags:
+  - Project44
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: project44
+    baseUri: https://api.project44.com/api/v4
+    description: project44 Tracking API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{PROJECT44_TOKEN}}'
+    resources:
+    - name: shipments
+      path: /shipments
+      operations:
+      - name: createshipment
+        method: POST
+        description: Create a tracked shipment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: listshipments
+        method: GET
+        description: List tracked shipments
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: Filter by shipment lifecycle status
+        - name: mode
+          in: query
+          type: string
+          description: Transportation mode filter
+        - name: carrierId
+          in: query
+          type: string
+          description: Carrier SCAC code or project44 carrier ID
+        - name: updatedSince
+          in: query
+          type: string
+          description: Return shipments updated after this ISO 8601 timestamp
+        - name: page
+          in: query
+          type: integer
+        - name: pageSize
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: shipments-shipmentid
+      path: /shipments/{shipmentId}
+      operations:
+      - name: getshipment
+        method: GET
+        description: Get a shipment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteshipment
+        method: DELETE
+        description: Stop tracking a shipment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: shipments-shipmentid-status-updates
+      path: /shipments/{shipmentId}/status-updates
+      operations:
+      - name: getshipmentstatusupdates
+        method: GET
+        description: Get shipment status updates
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: shipments-shipmentid-positions
+      path: /shipments/{shipmentId}/positions
+      operations:
+      - name: getshipmentpositions
+        method: GET
+        description: Get shipment position history
+        inputParameters:
+        - name: startTime
+          in: query
+          type: string
+        - name: endTime
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: webhooks-subscriptions
+      path: /webhooks/subscriptions
+      operations:
+      - name: listwebhooksubscriptions
+        method: GET
+        description: List webhook subscriptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createwebhooksubscription
+        method: POST
+        description: Create webhook subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: webhooks-subscriptions-subscriptionid
+      path: /webhooks/subscriptions/{subscriptionId}
+      operations:
+      - name: deletewebhooksubscription
+        method: DELETE
+        description: Delete webhook subscription
+        inputParameters:
+        - name: subscriptionId
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: project44-rest
+    description: REST adapter for project44 Tracking API.
+    resources:
+    - path: /shipments
+      name: createshipment
+      operations:
+      - method: POST
+        name: createshipment
+        description: Create a tracked shipment
+        call: project44.createshipment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /shipments
+      name: listshipments
+      operations:
+      - method: GET
+        name: listshipments
+        description: List tracked shipments
+        call: project44.listshipments
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /shipments/{shipmentId}
+      name: getshipment
+      operations:
+      - method: GET
+        name: getshipment
+        description: Get a shipment
+        call: project44.getshipment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /shipments/{shipmentId}
+      name: deleteshipment
+      operations:
+      - method: DELETE
+        name: deleteshipment
+        description: Stop tracking a shipment
+        call: project44.deleteshipment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /shipments/{shipmentId}/status-updates
+      name: getshipmentstatusupdates
+      operations:
+      - method: GET
+        name: getshipmentstatusupdates
+        description: Get shipment status updates
+        call: project44.getshipmentstatusupdates
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /shipments/{shipmentId}/positions
+      name: getshipmentpositions
+      operations:
+      - method: GET
+        name: getshipmentpositions
+        description: Get shipment position history
+        call: project44.getshipmentpositions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /webhooks/subscriptions
+      name: listwebhooksubscriptions
+      operations:
+      - method: GET
+        name: listwebhooksubscriptions
+        description: List webhook subscriptions
+        call: project44.listwebhooksubscriptions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /webhooks/subscriptions
+      name: createwebhooksubscription
+      operations:
+      - method: POST
+        name: createwebhooksubscription
+        description: Create webhook subscription
+        call: project44.createwebhooksubscription
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /webhooks/subscriptions/{subscriptionId}
+      name: deletewebhooksubscription
+      operations:
+      - method: DELETE
+        name: deletewebhooksubscription
+        description: Delete webhook subscription
+        call: project44.deletewebhooksubscription
+        with:
+          subscriptionId: rest.subscriptionId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: project44-mcp
+    transport: http
+    description: MCP adapter for project44 Tracking API for AI agent use.
+    tools:
+    - name: createshipment
+      description: Create a tracked shipment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: project44.createshipment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listshipments
+      description: List tracked shipments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: project44.listshipments
+      with:
+        status: tools.status
+        mode: tools.mode
+        carrierId: tools.carrierId
+        updatedSince: tools.updatedSince
+        page: tools.page
+        pageSize: tools.pageSize
+      inputParameters:
+      - name: status
+        type: string
+        description: Filter by shipment lifecycle status
+      - name: mode
+        type: string
+        description: Transportation mode filter
+      - name: carrierId
+        type: string
+        description: Carrier SCAC code or project44 carrier ID
+      - name: updatedSince
+        type: string
+        description: Return shipments updated after this ISO 8601 timestamp
+      - name: page
+        type: integer
+        description: page
+      - name: pageSize
+        type: integer
+        description: pageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getshipment
+      description: Get a shipment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: project44.getshipment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteshipment
+      description: Stop tracking a shipment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: project44.deleteshipment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getshipmentstatusupdates
+      description: Get shipment status updates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: project44.getshipmentstatusupdates
+      with:
+        limit: tools.limit
+      inputParameters:
+      - name: limit
+        type: integer
+        description: limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getshipmentpositions
+      description: Get shipment position history
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: project44.getshipmentpositions
+      with:
+        startTime: tools.startTime
+        endTime: tools.endTime
+        limit: tools.limit
+      inputParameters:
+      - name: startTime
+        type: string
+        description: startTime
+      - name: endTime
+        type: string
+        description: endTime
+      - name: limit
+        type: integer
+        description: limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listwebhooksubscriptions
+      description: List webhook subscriptions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: project44.listwebhooksubscriptions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createwebhooksubscription
+      description: Create webhook subscription
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: project44.createwebhooksubscription
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletewebhooksubscription
+      description: Delete webhook subscription
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: project44.deletewebhooksubscription
+      with:
+        subscriptionId: tools.subscriptionId
+      inputParameters:
+      - name: subscriptionId
+        type: string
+        description: subscriptionId
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    PROJECT44_TOKEN: PROJECT44_TOKEN
