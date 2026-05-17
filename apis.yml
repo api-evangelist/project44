@@ -1,7 +1,7 @@
 aid: project44
 url: https://raw.githubusercontent.com/api-evangelist/project44/refs/heads/main/apis.yml
 name: project44
-x-type: company
+kind: company
 description: >-
   project44 is the supply chain visibility platform that connects, automates, and provides predictive analytics across multimodal shipments worldwide.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
