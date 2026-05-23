@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ShipmentStop",
+  "title": "ShipmentStop",
+  "type": "object",
+  "properties": {
+    "stopNumber": {
+      "type": "integer"
+    },
+    "stopType": {
+      "type": "string",
+      "enum": [
+        "ORIGIN",
+        "DESTINATION",
+        "INTERMEDIATE"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "postalCode": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string",
+      "maxLength": 3
+    },
+    "latitude": {
+      "type": "number",
+      "format": "double"
+    },
+    "longitude": {
+      "type": "number",
+      "format": "double"
+    },
+    "appointmentWindow": {
+      "$ref": "#/components/schemas/TimeWindow"
+    },
+    "actualArrival": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true
+    },
+    "actualDeparture": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true
+    }
+  }
+}

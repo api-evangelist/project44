@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StatusUpdate",
+  "title": "StatusUpdate",
+  "type": "object",
+  "properties": {
+    "updateId": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "statusCode": {
+      "type": "string"
+    },
+    "statusDescription": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string",
+      "maxLength": 3
+    },
+    "isException": {
+      "type": "boolean"
+    },
+    "exceptionCode": {
+      "type": "string",
+      "nullable": true
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "CARRIER_EDI",
+        "CARRIER_API",
+        "TELEMATICS",
+        "MANUAL"
+      ]
+    }
+  }
+}

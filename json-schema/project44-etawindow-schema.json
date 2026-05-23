@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ETAWindow",
+  "title": "ETAWindow",
+  "type": "object",
+  "properties": {
+    "estimatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "confidenceLow": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "confidenceHigh": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "predictedOnTime": {
+      "type": "boolean"
+    },
+    "predictedLateMinutes": {
+      "type": "integer",
+      "nullable": true
+    }
+  }
+}

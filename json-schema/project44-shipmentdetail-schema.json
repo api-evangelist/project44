@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ShipmentDetail",
+  "title": "ShipmentDetail",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Shipment"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "stops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/ShipmentStop"
+          }
+        },
+        "statusUpdates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/StatusUpdate"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ShipmentCreate",
+  "title": "ShipmentCreate",
+  "type": "object",
+  "required": [
+    "mode",
+    "carrierCode",
+    "identifiers"
+  ],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": [
+        "TL",
+        "LTL",
+        "OCEAN",
+        "AIR",
+        "RAIL",
+        "PARCEL",
+        "DRAY"
+      ]
+    },
+    "carrierCode": {
+      "type": "string",
+      "description": "SCAC code"
+    },
+    "identifiers": {
+      "type": "array",
+      "description": "At least one tracking identifier required",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "PRO",
+              "BOL",
+              "PO",
+              "TRACKING_NUMBER",
+              "CONTAINER_NUMBER",
+              "BOOKING_NUMBER"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "stops": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ShipmentStopInput"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+name: project44 Domain Vocabulary
+provider: project44
+providerId: project44
+description: Tag-derived vocabulary for the project44 API surface; sourced from openapi/ tags.
+terms:
+- term: Shipments
+  description: Shipment tracking and management
+- term: Status
+  description: Shipment status updates
+- term: Tracking
+  description: Real-time position and event tracking
+- term: Webhooks
+  description: Webhook subscription management

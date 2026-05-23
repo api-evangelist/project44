@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WebhookSubscriptionCreate",
+  "title": "WebhookSubscriptionCreate",
+  "type": "object",
+  "required": [
+    "callbackUrl",
+    "eventTypes"
+  ],
+  "properties": {
+    "callbackUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "HTTPS URL to receive event notifications"
+    },
+    "eventTypes": {
+      "type": "array",
+      "description": "Event types to subscribe to",
+      "items": {
+        "type": "string",
+        "enum": [
+          "SHIPMENT_CREATED",
+          "STATUS_UPDATE",
+          "POSITION_UPDATE",
+          "ETA_CHANGE",
+          "EXCEPTION",
+          "COMPLETED"
+        ]
+      }
+    },
+    "secret": {
+      "type": "string",
+      "description": "HMAC secret for webhook signature verification"
+    }
+  }
+}

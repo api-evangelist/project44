@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WebhookSubscription",
+  "title": "WebhookSubscription",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "callbackUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "eventTypes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "PAUSED",
+        "FAILED"
+      ]
+    },
+    "createDatetime": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

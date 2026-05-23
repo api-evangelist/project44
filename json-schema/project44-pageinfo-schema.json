@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PageInfo",
+  "title": "PageInfo",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "integer"
+    },
+    "pageSize": {
+      "type": "integer"
+    },
+    "totalCount": {
+      "type": "integer"
+    },
+    "hasNextPage": {
+      "type": "boolean"
+    }
+  }
+}

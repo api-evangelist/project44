@@ -1,0 +1,187 @@
+{
+  "provider": "project44",
+  "providerId": "project44",
+  "kind": "json-structure",
+  "description": "Structural overview of the project44 API surface; extracted from openapi/.",
+  "schemaCount": 14,
+  "operationCount": 9,
+  "schemas": [
+    {
+      "name": "Shipment",
+      "type": "object",
+      "propertyCount": 16,
+      "required": []
+    },
+    {
+      "name": "ShipmentCreate",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "mode",
+        "carrierCode",
+        "identifiers"
+      ]
+    },
+    {
+      "name": "ShipmentDetail",
+      "type": null,
+      "propertyCount": 0,
+      "required": []
+    },
+    {
+      "name": "ShipmentStop",
+      "type": "object",
+      "propertyCount": 13,
+      "required": []
+    },
+    {
+      "name": "ShipmentStopInput",
+      "type": "object",
+      "propertyCount": 7,
+      "required": [
+        "stopNumber",
+        "stopType"
+      ]
+    },
+    {
+      "name": "StatusUpdate",
+      "type": "object",
+      "propertyCount": 10,
+      "required": []
+    },
+    {
+      "name": "Position",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "ETAWindow",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "TimeWindow",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "ShipmentException",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "WebhookSubscription",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "WebhookSubscriptionCreate",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "callbackUrl",
+        "eventTypes"
+      ]
+    },
+    {
+      "name": "PageInfo",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/shipments",
+      "operationId": "listShipments",
+      "summary": "List tracked shipments",
+      "tags": [
+        "Shipments"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/shipments",
+      "operationId": "createShipment",
+      "summary": "Create a tracked shipment",
+      "tags": [
+        "Shipments"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/shipments/{shipmentId}",
+      "operationId": "getShipment",
+      "summary": "Get a shipment",
+      "tags": [
+        "Shipments"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/shipments/{shipmentId}",
+      "operationId": "deleteShipment",
+      "summary": "Stop tracking a shipment",
+      "tags": [
+        "Shipments"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/shipments/{shipmentId}/status-updates",
+      "operationId": "getShipmentStatusUpdates",
+      "summary": "Get shipment status updates",
+      "tags": [
+        "Status"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/shipments/{shipmentId}/positions",
+      "operationId": "getShipmentPositions",
+      "summary": "Get shipment position history",
+      "tags": [
+        "Tracking"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/webhooks/subscriptions",
+      "operationId": "listWebhookSubscriptions",
+      "summary": "List webhook subscriptions",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/webhooks/subscriptions",
+      "operationId": "createWebhookSubscription",
+      "summary": "Create webhook subscription",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/webhooks/subscriptions/{subscriptionId}",
+      "operationId": "deleteWebhookSubscription",
+      "summary": "Delete webhook subscription",
+      "tags": [
+        "Webhooks"
+      ]
+    }
+  ]
+}
