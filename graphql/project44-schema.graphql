@@ -1,0 +1,1037 @@
+"""
+project44 Conceptual GraphQL Schema
+Supply chain visibility platform covering shipment tracking, LTL/TL/multimodal
+freight, capacity management, YMS, and webhooks.
+Derived from the project44 REST API v4: https://developers.project44.com/
+"""
+
+# ─────────────────────────────────────────────
+# Enumerations
+# ─────────────────────────────────────────────
+
+"""High-level transport mode."""
+enum Mode {
+  LTL
+  TL
+  OCEAN
+  AIR
+  RAIL
+  PARCEL
+  INTERMODAL
+  DRAYAGE
+}
+
+"""Current lifecycle status of a shipment."""
+enum ShipmentStatus {
+  PENDING
+  TENDERED
+  ACCEPTED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  EXCEPTION
+  CANCELLED
+  RETURNED
+}
+
+"""Type of tracking event."""
+enum TrackingEventType {
+  POSITION_UPDATE
+  ARRIVAL
+  DEPARTURE
+  PICKUP
+  DELIVERY
+  EXCEPTION
+  CUSTOMS_CLEARED
+  TRANSSHIPMENT
+  GATE_IN
+  GATE_OUT
+  LOADED
+  DISCHARGED
+  ESTIMATED_DEPARTURE
+  ESTIMATED_ARRIVAL
+}
+
+"""Alert severity level."""
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+"""Supported document types."""
+enum DocumentType {
+  BOL
+  POD
+  INVOICE
+  CUSTOMS_DECLARATION
+  PACKING_LIST
+  CERTIFICATE_OF_ORIGIN
+  DANGEROUS_GOODS
+  OTHER
+}
+
+"""Webhook event category."""
+enum WebhookEventType {
+  SHIPMENT_CREATED
+  SHIPMENT_UPDATED
+  SHIPMENT_CANCELLED
+  TRACKING_EVENT_RECEIVED
+  STATUS_UPDATED
+  ETA_UPDATED
+  ALERT_TRIGGERED
+  DOCUMENT_UPLOADED
+  APPOINTMENT_SCHEDULED
+}
+
+"""Temperature unit."""
+enum TemperatureUnit {
+  CELSIUS
+  FAHRENHEIT
+}
+
+"""Container size/type ISO codes."""
+enum ContainerType {
+  DRY_20
+  DRY_40
+  DRY_40HC
+  REEFER_20
+  REEFER_40
+  OPEN_TOP_20
+  OPEN_TOP_40
+  FLAT_RACK_20
+  FLAT_RACK_40
+  TANK_20
+}
+
+# ─────────────────────────────────────────────
+# Scalar types
+# ─────────────────────────────────────────────
+
+"""ISO 8601 date-time string."""
+scalar DateTime
+
+"""Arbitrary JSON payload."""
+scalar JSON
+
+"""Decimal number stored as string to preserve precision."""
+scalar Decimal
+
+# ─────────────────────────────────────────────
+# Location and Geography
+# ─────────────────────────────────────────────
+
+"""Latitude/longitude coordinate pair."""
+type GeoCoordinate {
+  latitude: Float!
+  longitude: Float!
+  accuracyMeters: Float
+  capturedAt: DateTime
+}
+
+"""Structured postal address."""
+type Address {
+  line1: String
+  line2: String
+  city: String
+  stateProvince: String
+  postalCode: String
+  countryCode: String!
+  freeformAddress: String
+}
+
+"""Named place with address and geolocation."""
+type Location {
+  id: ID!
+  name: String
+  locationType: String
+  address: Address
+  coordinates: GeoCoordinate
+  timezone: String
+  facilityCode: String
+}
+
+"""Facility or terminal where cargo can be accessed or transferred."""
+type AccessPoint {
+  id: ID!
+  name: String!
+  type: String
+  location: Location
+  operatingHours: String
+  contactPhone: String
+  contactEmail: String
+}
+
+# ─────────────────────────────────────────────
+# Carrier
+# ─────────────────────────────────────────────
+
+"""Transport mode detail record."""
+type TransportMode {
+  id: ID!
+  mode: Mode!
+  subMode: String
+  description: String
+}
+
+"""Carrier entity with standard industry identifiers."""
+type Carrier {
+  id: ID!
+  name: String!
+  scac: String
+  dotNumber: String
+  mcNumber: String
+  iataCode: String
+  phone: String
+  email: String
+  website: String
+  supportedModes: [TransportMode!]
+  active: Boolean!
+}
+
+"""Contract terms between a shipper and a carrier."""
+type CarrierContract {
+  id: ID!
+  carrier: Carrier!
+  contractNumber: String
+  effectiveDate: DateTime
+  expirationDate: DateTime
+  terms: String
+  autoRenew: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Shipment Core
+# ─────────────────────────────────────────────
+
+"""Estimated time of arrival with confidence window."""
+type ETAWindow {
+  earliest: DateTime!
+  latest: DateTime!
+  predicted: DateTime
+  confidenceScore: Float
+  calculatedAt: DateTime!
+  source: String
+}
+
+"""Single position or status event recorded along the route."""
+type TrackingEvent {
+  id: ID!
+  shipmentId: ID!
+  eventType: TrackingEventType!
+  occurredAt: DateTime!
+  receivedAt: DateTime!
+  location: Location
+  coordinates: GeoCoordinate
+  description: String
+  carrierEventCode: String
+  rawPayload: JSON
+}
+
+"""State transition record for a shipment."""
+type StatusUpdate {
+  id: ID!
+  shipmentId: ID!
+  previousStatus: ShipmentStatus
+  currentStatus: ShipmentStatus!
+  reason: String
+  location: Location
+  occurredAt: DateTime!
+  source: String
+}
+
+"""Ordered collection of all status updates for a shipment."""
+type StatusHistory {
+  shipmentId: ID!
+  updates: [StatusUpdate!]!
+  totalCount: Int!
+}
+
+"""Named checkpoint in the shipment lifecycle."""
+type Milestone {
+  id: ID!
+  name: String!
+  code: String
+  plannedAt: DateTime
+  actualAt: DateTime
+  location: Location
+  completed: Boolean!
+  completedAt: DateTime
+}
+
+"""Planned sequence of milestones for a shipment."""
+type MilestonePlan {
+  id: ID!
+  shipmentId: ID!
+  milestones: [Milestone!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Variance from plan in time, location, or condition."""
+type Deviation {
+  id: ID!
+  shipmentId: ID!
+  deviationType: String!
+  severity: AlertSeverity!
+  expectedValue: String
+  actualValue: String
+  detectedAt: DateTime!
+  resolvedAt: DateTime
+  description: String
+}
+
+"""Scheduled or actual pickup event at origin."""
+type Pickup {
+  id: ID!
+  shipmentId: ID!
+  scheduledWindow: ETAWindow
+  actualTime: DateTime
+  location: Location!
+  contactName: String
+  contactPhone: String
+  specialInstructions: String
+  completed: Boolean!
+}
+
+"""Scheduled or actual delivery event at destination."""
+type Delivery {
+  id: ID!
+  shipmentId: ID!
+  scheduledWindow: ETAWindow
+  actualTime: DateTime
+  location: Location!
+  contactName: String
+  contactPhone: String
+  specialInstructions: String
+  completed: Boolean!
+  pod: POD
+}
+
+"""Proof of delivery record."""
+type POD {
+  id: ID!
+  shipmentId: ID!
+  signedBy: String
+  signedAt: DateTime
+  signatureImageUrl: String
+  deliveryLocation: Location
+  notes: String
+  documents: [DocumentUpload!]
+}
+
+"""Aggregated tracking data for a shipment."""
+type ShipmentTrackingData {
+  shipmentId: ID!
+  currentLocation: Location
+  currentCoordinates: GeoCoordinate
+  currentStatus: ShipmentStatus!
+  eta: ETAWindow
+  lastEventAt: DateTime
+  recentEvents: [TrackingEvent!]!
+  statusHistory: StatusHistory
+  milestones: [Milestone!]
+  deviations: [Deviation!]
+}
+
+"""Core shipment record."""
+type Shipment {
+  id: ID!
+  referenceNumber: String
+  proNumber: String
+  bolNumber: String
+  purchaseOrderNumber: String
+  mode: Mode!
+  carrier: Carrier
+  status: ShipmentStatus!
+  origin: Location!
+  destination: Location!
+  pickup: Pickup
+  delivery: Delivery
+  estimatedPickup: DateTime
+  estimatedDelivery: DateTime
+  eta: ETAWindow
+  trackingData: ShipmentTrackingData
+  containers: [Container!]
+  commodities: [Commodity!]
+  hazmat: [HazMat!]
+  documents: [DocumentUpload!]
+  alerts: [Alert!]
+  customs: Customs
+  tags: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  organizationId: ID!
+}
+
+# ─────────────────────────────────────────────
+# Container
+# ─────────────────────────────────────────────
+
+"""Intermodal container with type and current status."""
+type Container {
+  id: ID!
+  containerNumber: String!
+  containerType: ContainerType!
+  sealNumber: String
+  shipmentId: ID
+  currentLocation: Location
+  currentStatus: String
+  vesselName: String
+  voyageNumber: String
+  events: [ContainerEvent!]
+}
+
+"""Event specific to a container (gate-in, gate-out, loaded, discharged)."""
+type ContainerEvent {
+  id: ID!
+  containerId: ID!
+  eventType: TrackingEventType!
+  occurredAt: DateTime!
+  location: Location
+  vesselName: String
+  voyageNumber: String
+  portCode: String
+  description: String
+}
+
+# ─────────────────────────────────────────────
+# Freight / Capacity
+# ─────────────────────────────────────────────
+
+"""Individual line item within a freight bid."""
+type FreightBidLine {
+  id: ID!
+  bidId: ID!
+  lineType: String!
+  description: String
+  amount: Decimal!
+  currency: String!
+  quantity: Float
+  unit: String
+}
+
+"""Bid submitted by a carrier in response to a rate request."""
+type FreightBid {
+  id: ID!
+  requestId: ID!
+  carrier: Carrier!
+  totalAmount: Decimal!
+  currency: String!
+  validUntil: DateTime
+  transitDays: Int
+  lines: [FreightBidLine!]!
+  notes: String
+  submittedAt: DateTime!
+  status: String!
+}
+
+"""Award of a freight bid to a carrier."""
+type FreightAward {
+  id: ID!
+  bid: FreightBid!
+  awardedAt: DateTime!
+  awardedBy: String
+  shipmentId: ID
+  notes: String
+}
+
+"""Accessorial or line-item component of a lane rate."""
+type LaneRateLine {
+  id: ID!
+  laneRateId: ID!
+  chargeCode: String!
+  description: String
+  amount: Decimal!
+  currency: String!
+  basis: String
+  min: Decimal
+  max: Decimal
+}
+
+"""Contracted or spot rate for an origin-destination lane."""
+type LaneRate {
+  id: ID!
+  carrier: Carrier!
+  mode: Mode!
+  origin: Location!
+  destination: Location!
+  totalAmount: Decimal!
+  currency: String!
+  effectiveDate: DateTime
+  expirationDate: DateTime
+  transitDays: Int
+  lines: [LaneRateLine!]!
+  contractId: ID
+}
+
+"""Rule governing how rates are calculated or applied."""
+type RateRule {
+  id: ID!
+  name: String!
+  description: String
+  ruleType: String!
+  conditions: JSON
+  adjustmentType: String
+  adjustmentValue: Decimal
+  priority: Int!
+  active: Boolean!
+}
+
+"""Real-time rate quote for a specific shipment move."""
+type RateQuote {
+  id: ID!
+  mode: Mode!
+  carrier: Carrier
+  origin: Location!
+  destination: Location!
+  totalAmount: Decimal!
+  currency: String!
+  transitDays: Int
+  validUntil: DateTime
+  lines: [LaneRateLine!]!
+  quotedAt: DateTime!
+  rulesApplied: [RateRule!]
+}
+
+"""Tender of a freight order to a carrier."""
+type OrderTender {
+  id: ID!
+  shipmentId: ID
+  carrier: Carrier!
+  mode: Mode!
+  origin: Location!
+  destination: Location!
+  requestedPickup: DateTime
+  requestedDelivery: DateTime
+  rateQuote: RateQuote
+  status: String!
+  respondedAt: DateTime
+  createdAt: DateTime!
+}
+
+"""EDI 204-equivalent load tender record."""
+type LoadTender {
+  id: ID!
+  orderTenderId: ID
+  shipmentId: ID
+  carrier: Carrier!
+  tenderNumber: String
+  pickupLocation: Location!
+  deliveryLocation: Location!
+  pickupWindow: ETAWindow
+  deliveryWindow: ETAWindow
+  commodities: [Commodity!]!
+  specialInstructions: String
+  status: String!
+  acceptedAt: DateTime
+  declinedAt: DateTime
+  declineReason: String
+  createdAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Commodities and Compliance
+# ─────────────────────────────────────────────
+
+"""Commodity description including weight, dimensions, and classification."""
+type Commodity {
+  id: ID!
+  description: String!
+  nmfcCode: String
+  freightClass: String
+  harmonizedCode: String
+  quantity: Float!
+  quantityUnit: String!
+  weightKg: Decimal
+  lengthCm: Decimal
+  widthCm: Decimal
+  heightCm: Decimal
+  packageType: String
+  value: Decimal
+  currency: String
+}
+
+"""Hazardous materials declaration."""
+type HazMat {
+  id: ID!
+  shipmentId: ID!
+  unNumber: String!
+  properShippingName: String!
+  hazardClass: String!
+  packingGroup: String
+  emergencyContactPhone: String
+  quantity: Decimal
+  quantityUnit: String
+  flashPointCelsius: Decimal
+  specialProvisions: String
+}
+
+"""Temperature reading with unit and timestamp."""
+type Temperature {
+  value: Decimal!
+  unit: TemperatureUnit!
+  recordedAt: DateTime!
+}
+
+"""IoT sensor reading attached to a shipment or container."""
+type SensorData {
+  id: ID!
+  shipmentId: ID
+  containerId: ID
+  deviceId: String!
+  sensorType: String!
+  temperature: Temperature
+  humidityPercent: Decimal
+  shockG: Decimal
+  lightLux: Decimal
+  location: GeoCoordinate
+  recordedAt: DateTime!
+  receivedAt: DateTime!
+}
+
+"""Customs record for an international shipment."""
+type Customs {
+  id: ID!
+  shipmentId: ID!
+  exportCountryCode: String!
+  importCountryCode: String!
+  entryNumber: String
+  entryDate: DateTime
+  declaredValue: Decimal
+  currency: String
+  incoterms: String
+  cleared: Boolean!
+  clearedAt: DateTime
+  declarations: [CustomsDeclaration!]!
+  documents: [DocumentUpload!]
+}
+
+"""Individual declaration line within a customs record."""
+type CustomsDeclaration {
+  id: ID!
+  customsId: ID!
+  lineNumber: Int!
+  commodity: Commodity!
+  countryOfOrigin: String
+  tariffCode: String
+  declaredValue: Decimal!
+  currency: String!
+  dutyAmount: Decimal
+  taxAmount: Decimal
+}
+
+"""Uploaded document attached to a shipment."""
+type DocumentUpload {
+  id: ID!
+  shipmentId: ID
+  documentType: DocumentType!
+  fileName: String!
+  mimeType: String!
+  sizeBytes: Int
+  url: String!
+  uploadedBy: String
+  uploadedAt: DateTime!
+  expiresAt: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Alerts
+# ─────────────────────────────────────────────
+
+"""Reusable rule definition for alert triggers."""
+type AlertRule {
+  id: ID!
+  name: String!
+  description: String
+  eventType: String!
+  conditions: JSON!
+  severity: AlertSeverity!
+  active: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Alert configuration attached to a shipment or lane."""
+type AlertConfig {
+  id: ID!
+  shipmentId: ID
+  laneId: ID
+  rule: AlertRule!
+  notificationChannels: [String!]!
+  recipients: [String!]
+  active: Boolean!
+  createdAt: DateTime!
+}
+
+"""Triggered notification based on a configured rule."""
+type Alert {
+  id: ID!
+  shipmentId: ID
+  rule: AlertRule!
+  severity: AlertSeverity!
+  title: String!
+  message: String
+  triggeredAt: DateTime!
+  acknowledgedAt: DateTime
+  resolvedAt: DateTime
+  metadata: JSON
+}
+
+# ─────────────────────────────────────────────
+# Platform / Integration
+# ─────────────────────────────────────────────
+
+"""Named role with permission grants."""
+type Role {
+  id: ID!
+  name: String!
+  description: String
+  permissions: [String!]!
+  system: Boolean!
+  createdAt: DateTime!
+}
+
+"""Team within an organization with scoped permissions."""
+type Team {
+  id: ID!
+  organizationId: ID!
+  name: String!
+  description: String
+  roles: [Role!]!
+  memberCount: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Customer organization account on the platform."""
+type Organization {
+  id: ID!
+  name: String!
+  type: String
+  region: String
+  teams: [Team!]
+  integrations: [Integration!]
+  webhooks: [Webhook!]
+  apiTokens: [APIToken!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Reusable connector definition for an integration type."""
+type Connector {
+  id: ID!
+  name: String!
+  category: String!
+  description: String
+  version: String!
+  authType: String
+  configSchema: JSON
+  active: Boolean!
+}
+
+"""Configured third-party system integration."""
+type Integration {
+  id: ID!
+  organizationId: ID!
+  connector: Connector!
+  name: String!
+  status: String!
+  config: JSON
+  lastSyncAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Registered webhook endpoint."""
+type Webhook {
+  id: ID!
+  organizationId: ID!
+  url: String!
+  description: String
+  secret: String
+  active: Boolean!
+  subscriptions: [WebhookSubscription!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Subscription linking a webhook to specific event types."""
+type WebhookSubscription {
+  id: ID!
+  webhookId: ID!
+  eventType: WebhookEventType!
+  filter: JSON
+  active: Boolean!
+  createdAt: DateTime!
+}
+
+"""API access token with scope and expiry."""
+type APIToken {
+  id: ID!
+  organizationId: ID!
+  name: String!
+  scopes: [String!]!
+  expiresAt: DateTime
+  lastUsedAt: DateTime
+  createdAt: DateTime!
+  revokedAt: DateTime
+  active: Boolean!
+}
+
+"""API surface descriptor for platform introspection."""
+type API {
+  id: ID!
+  name: String!
+  version: String!
+  baseUrl: String!
+  region: String!
+  status: String!
+  deprecatedAt: DateTime
+  sunsetAt: DateTime
+  documentationUrl: String
+}
+
+# ─────────────────────────────────────────────
+# Input Types
+# ─────────────────────────────────────────────
+
+input AddressInput {
+  line1: String
+  line2: String
+  city: String
+  stateProvince: String
+  postalCode: String
+  countryCode: String!
+}
+
+input LocationInput {
+  name: String
+  address: AddressInput
+  coordinates: GeoCoordinateInput
+  facilityCode: String
+}
+
+input GeoCoordinateInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+input ShipmentFilter {
+  status: [ShipmentStatus!]
+  mode: [Mode!]
+  carrierId: ID
+  originCountryCode: String
+  destinationCountryCode: String
+  createdAfter: DateTime
+  createdBefore: DateTime
+  referenceNumber: String
+  tags: [String!]
+}
+
+input ShipmentInput {
+  referenceNumber: String
+  bolNumber: String
+  purchaseOrderNumber: String
+  mode: Mode!
+  carrierId: ID
+  origin: LocationInput!
+  destination: LocationInput!
+  requestedPickup: DateTime
+  requestedDelivery: DateTime
+  commodities: [CommodityInput!]
+  tags: [String!]
+}
+
+input ShipmentUpdateInput {
+  referenceNumber: String
+  carrierId: ID
+  requestedPickup: DateTime
+  requestedDelivery: DateTime
+  tags: [String!]
+}
+
+input CommodityInput {
+  description: String!
+  nmfcCode: String
+  freightClass: String
+  harmonizedCode: String
+  quantity: Float!
+  quantityUnit: String!
+  weightKg: Decimal
+  lengthCm: Decimal
+  widthCm: Decimal
+  heightCm: Decimal
+  packageType: String
+  value: Decimal
+  currency: String
+}
+
+input RateQuoteInput {
+  mode: Mode!
+  carrierId: ID
+  origin: AddressInput!
+  destination: AddressInput!
+  requestedPickup: DateTime
+  commodities: [CommodityInput!]!
+}
+
+input OrderTenderInput {
+  carrierId: ID!
+  mode: Mode!
+  origin: LocationInput!
+  destination: LocationInput!
+  requestedPickup: DateTime!
+  requestedDelivery: DateTime!
+  rateQuoteId: ID
+  commodities: [CommodityInput!]!
+}
+
+input AlertConfigInput {
+  shipmentId: ID
+  laneId: ID
+  ruleId: ID!
+  notificationChannels: [String!]!
+  recipients: [String!]
+}
+
+input WebhookInput {
+  url: String!
+  description: String
+  eventTypes: [WebhookEventType!]!
+  secret: String
+}
+
+input DocumentUploadInput {
+  shipmentId: ID
+  documentType: DocumentType!
+  fileName: String!
+  mimeType: String!
+  base64Content: String!
+}
+
+input APITokenInput {
+  name: String!
+  scopes: [String!]!
+  expiresAt: DateTime
+}
+
+input CarrierFilter {
+  scac: String
+  mode: Mode
+  name: String
+  active: Boolean
+}
+
+# ─────────────────────────────────────────────
+# Connection / Pagination
+# ─────────────────────────────────────────────
+
+"""Pagination metadata."""
+type PageInfo {
+  page: Int!
+  pageSize: Int!
+  totalCount: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+"""Paginated list of shipments."""
+type ShipmentConnection {
+  nodes: [Shipment!]!
+  pageInfo: PageInfo!
+}
+
+# ─────────────────────────────────────────────
+# Root Types
+# ─────────────────────────────────────────────
+
+type Query {
+  """Fetch a single shipment by its platform identifier."""
+  shipment(id: ID!): Shipment
+
+  """Paginated, filterable list of shipments."""
+  shipments(filter: ShipmentFilter, page: Int, pageSize: Int): ShipmentConnection!
+
+  """Retrieve aggregated tracking data for a shipment."""
+  trackingData(shipmentId: ID!): ShipmentTrackingData
+
+  """Retrieve status history for a shipment."""
+  statusHistory(shipmentId: ID!): StatusHistory
+
+  """Look up a carrier by SCAC code."""
+  carrier(scac: String!): Carrier
+
+  """Search carriers by filter criteria."""
+  carriers(filter: CarrierFilter): [Carrier!]!
+
+  """Request a real-time rate quote."""
+  rateQuote(input: RateQuoteInput!): RateQuote!
+
+  """Query lane rates for an origin/destination pair."""
+  laneRates(origin: AddressInput!, destination: AddressInput!, mode: Mode): [LaneRate!]!
+
+  """List alerts, optionally scoped to a shipment."""
+  alerts(shipmentId: ID, severity: AlertSeverity): [Alert!]!
+
+  """List available alert rules."""
+  alertRules: [AlertRule!]!
+
+  """List registered webhooks for the authenticated organization."""
+  webhooks: [Webhook!]!
+
+  """Retrieve the authenticated organization."""
+  organization: Organization
+
+  """List all connectors available on the platform."""
+  connectors: [Connector!]!
+
+  """List all API surface descriptors."""
+  apis: [API!]!
+}
+
+type Mutation {
+  """Create a new shipment record."""
+  createShipment(input: ShipmentInput!): Shipment!
+
+  """Update details on an existing shipment."""
+  updateShipment(id: ID!, input: ShipmentUpdateInput!): Shipment!
+
+  """Cancel an active shipment."""
+  cancelShipment(id: ID!): Shipment!
+
+  """Tender a freight order to a carrier."""
+  createOrderTender(input: OrderTenderInput!): OrderTender!
+
+  """Configure alerts for a shipment or lane."""
+  createAlertConfig(input: AlertConfigInput!): AlertConfig!
+
+  """Register a new webhook endpoint."""
+  registerWebhook(input: WebhookInput!): Webhook!
+
+  """Remove a webhook registration."""
+  deleteWebhook(id: ID!): Boolean!
+
+  """Attach a document to a shipment."""
+  uploadDocument(input: DocumentUploadInput!): DocumentUpload!
+
+  """Generate a new API access token."""
+  createAPIToken(input: APITokenInput!): APIToken!
+
+  """Revoke an existing API token."""
+  revokeAPIToken(id: ID!): Boolean!
+}
+
+type Subscription {
+  """Real-time status change events for a shipment."""
+  shipmentStatusUpdated(shipmentId: ID!): StatusUpdate!
+
+  """Real-time tracking position events for a shipment."""
+  trackingEventReceived(shipmentId: ID!): TrackingEvent!
+
+  """Real-time alert delivery for the authenticated organization."""
+  alertTriggered(organizationId: ID!): Alert!
+}

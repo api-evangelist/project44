@@ -2,60 +2,55 @@ aid: project44
 url: https://raw.githubusercontent.com/api-evangelist/project44/refs/heads/main/apis.yml
 name: project44
 kind: company
-description: project44 is the supply chain visibility platform that connects, automates, and provides predictive analytics
-  across multimodal shipments worldwide.
+description: project44 is the supply chain visibility platform that connects, automates,
+  and provides predictive analytics across multimodal shipments worldwide.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Logistics
-  - Supply Chain Visibility
-  - Tracking
-  - Freight
-  - Multi-modal
+- Logistics
+- Supply Chain Visibility
+- Tracking
+- Freight
+- Multi-modal
 created: '2026-05-08'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: project44:project44-api
-    name: project44 API v4
-    description: project44 API v4 covers shipment tracking, LTL, TL, multimodal services, capacity management, YMS appointments,
-      and webhooks. Production endpoints exist for Americas (na12) and Europe (eu12) regions, with sandbox environments available.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    humanURL: https://developers.project44.com/
-    baseURL: https://na12.api.project44.com/api/v4
-    tags:
-    - Logistics
-    - Tracking
-    - REST
-    properties:
-    - type: Documentation
-      url: https://developers.project44.com/
-    - type: Authentication
-      url: https://developers.project44.com/authentication
-    - type: OpenAPI
-      url: openapi/project44-tracking-openapi.yml
-    - type: NaftikoCapability
-      url: capabilities/tracking-shipments.yaml
-    - type: NaftikoCapability
-      url: capabilities/tracking-status.yaml
-    - type: NaftikoCapability
-      url: capabilities/tracking-tracking.yaml
-    - type: NaftikoCapability
-      url: capabilities/tracking-webhooks.yaml
-common:
-  - type: GitHubOrganization
-    url: https://github.com/project44
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/project-44
-  - type: Website
-    url: https://www.project44.com/
+- aid: project44:project44-api
+  name: project44 API v4
+  description: project44 API v4 covers shipment tracking, LTL, TL, multimodal services,
+    capacity management, YMS appointments, and webhooks. Production endpoints exist
+    for Americas (na12) and Europe (eu12) regions, with sandbox environments available.
+  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.project44.com/
+  baseURL: https://na12.api.project44.com/api/v4
+  tags:
+  - Logistics
+  - Tracking
+  - REST
+  properties:
   - type: Documentation
     url: https://developers.project44.com/
-  - type: Plans
-    url: plans/project44-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/project44-rate-limits.yml
-  - type: FinOps
-    url: finops/project44-finops.yml
+  - type: Authentication
+    url: https://developers.project44.com/authentication
+  - type: OpenAPI
+    url: openapi/project44-tracking-openapi.yml
+  - url: graphql/project44-graphql.md
+    type: GraphQL
+common:
+- type: GitHubOrganization
+  url: https://github.com/project44
+- type: LinkedIn
+  url: https://www.linkedin.com/company/project-44
+- type: Website
+  url: https://www.project44.com/
+- type: Documentation
+  url: https://developers.project44.com/
+- type: Plans
+  url: plans/project44-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/project44-rate-limits.yml
+- type: FinOps
+  url: finops/project44-finops.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
