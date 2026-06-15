@@ -1,0 +1,255 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "project44 Tracking API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://api.project44.com/api/v4/oauth2/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shipments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List tracked shipments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.project44.com/api/v4/shipments",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by shipment lifecycle status"
+              },
+              {
+                "name": "mode",
+                "value": "",
+                "type": "query",
+                "description": "Transportation mode filter"
+              },
+              {
+                "name": "carrierId",
+                "value": "",
+                "type": "query",
+                "description": "Carrier SCAC code or project44 carrier ID"
+              },
+              {
+                "name": "updatedSince",
+                "value": "",
+                "type": "query",
+                "description": "Return shipments updated after this ISO 8601 timestamp"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of tracked shipments with current status."
+        },
+        {
+          "info": {
+            "name": "Create a tracked shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.project44.com/api/v4/shipments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new shipment to track, associating it with carrier and identifier information."
+        },
+        {
+          "info": {
+            "name": "Get a shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.project44.com/api/v4/shipments/:shipmentId",
+            "params": [
+              {
+                "name": "shipmentId",
+                "value": "",
+                "type": "path",
+                "description": "project44 shipment identifier"
+              }
+            ]
+          },
+          "docs": "Returns current status, position, ETA, and event history for a shipment."
+        },
+        {
+          "info": {
+            "name": "Stop tracking a shipment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.project44.com/api/v4/shipments/:shipmentId",
+            "params": [
+              {
+                "name": "shipmentId",
+                "value": "",
+                "type": "path",
+                "description": "project44 shipment identifier"
+              }
+            ]
+          },
+          "docs": "Removes a shipment from active tracking."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shipment status updates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.project44.com/api/v4/shipments/:shipmentId/status-updates",
+            "params": [
+              {
+                "name": "shipmentId",
+                "value": "",
+                "type": "path",
+                "description": "project44 shipment identifier"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the timeline of status updates and events for a shipment."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tracking",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shipment position history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.project44.com/api/v4/shipments/:shipmentId/positions",
+            "params": [
+              {
+                "name": "shipmentId",
+                "value": "",
+                "type": "path",
+                "description": "project44 shipment identifier"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns GPS position history for a shipment."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List webhook subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.project44.com/api/v4/webhooks/subscriptions"
+          },
+          "docs": "Returns all active webhook subscriptions for the authenticated account."
+        },
+        {
+          "info": {
+            "name": "Create webhook subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.project44.com/api/v4/webhooks/subscriptions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new webhook subscription to receive shipment event notifications."
+        },
+        {
+          "info": {
+            "name": "Delete webhook subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.project44.com/api/v4/webhooks/subscriptions/:subscriptionId",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes an active webhook subscription."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
