@@ -4,7 +4,7 @@ name: project44
 kind: company
 description: project44 is the supply chain visibility platform that connects, automates,
   and provides predictive analytics across multimodal shipments worldwide.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Logistics
 - Supply Chain Visibility
@@ -20,7 +20,7 @@ apis:
   description: project44 API v4 covers shipment tracking, LTL, TL, multimodal services,
     capacity management, YMS appointments, and webhooks. Production endpoints exist
     for Americas (na12) and Europe (eu12) regions, with sandbox environments available.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://developers.project44.com/
   baseURL: https://na12.api.project44.com/api/v4
   tags:
