@@ -37,6 +37,10 @@ apis:
   - url: graphql/project44-graphql.md
     type: GraphQL
 common:
+- type: TrustCenter
+  url: security/project44-trust-center.yml
+- type: DomainSecurity
+  url: security/project44-domain-security.yml
 - type: Authentication
   url: authentication/project44-authentication.yml
 - type: OAuthScopes

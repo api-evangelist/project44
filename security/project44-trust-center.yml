@@ -1,0 +1,25 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://trust.project44.com/
+url: https://trust.project44.com/
+certifications:
+- SOC 2
+- ISO 27001
+- ISO 27017
+- ISO 27018
+- PCI DSS
+- HIPAA
+- FedRAMP
+- GDPR
+evidence:
+- source: https://trust.project44.com/
+  keywords:
+  - soc 2
+  - soc2
+  - iso 27001
+  - pci-dss
+  - hipaa
+  - fedramp
+  - trust center
+  - gdpr
