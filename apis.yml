@@ -37,6 +37,10 @@ apis:
   - url: graphql/project44-graphql.md
     type: GraphQL
 common:
+- type: Authentication
+  url: authentication/project44-authentication.yml
+- type: OAuthScopes
+  url: scopes/project44-scopes.yml
 - type: GitHubOrganization
   url: https://github.com/project44
 - type: LinkedIn
@@ -51,6 +55,8 @@ common:
   url: rate-limits/project44-rate-limits.yml
 - type: FinOps
   url: finops/project44-finops.yml
+- url: https://www.project44.com/feed/
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

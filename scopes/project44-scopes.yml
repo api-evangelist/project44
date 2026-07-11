@@ -1,0 +1,28 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/project44-tracking-openapi.yml
+schemes:
+- name: oauth2
+  source: openapi/project44-tracking-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.project44.com/api/v4/oauth2/token
+scopes:
+- scope: tracking.read
+  description: Read shipment tracking data
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/project44-tracking-openapi.yml
+- scope: tracking.write
+  description: Create and manage shipments
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/project44-tracking-openapi.yml
+- scope: webhooks.write
+  description: Manage webhook subscriptions
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/project44-tracking-openapi.yml
