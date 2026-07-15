@@ -37,6 +37,8 @@ apis:
   - url: graphql/project44-graphql.md
     type: GraphQL
 common:
+- type: AgenticAccess
+  url: agentic-access/project44-agentic-access.yml
 - type: TrustCenter
   url: security/project44-trust-center.yml
 - type: DomainSecurity
