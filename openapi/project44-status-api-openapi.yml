@@ -1,0 +1,118 @@
+openapi: 3.1.0
+info:
+  title: project44 Tracking Shipments Status API
+  description: project44 Tracking API provides real-time shipment tracking and visibility for multimodal freight including truckload (TL), LTL, ocean, rail, air, and parcel. APIs deliver shipment status updates, predictive ETAs, and exception alerts.
+  version: 2.0.0
+  contact:
+    name: project44 Support
+    url: https://support.project44.com
+  license:
+    name: project44 Terms of Service
+    url: https://www.project44.com/legal/
+servers:
+- url: https://api.project44.com/api/v4
+  description: project44 Production API
+security:
+- oauth2: []
+tags:
+- name: Status
+  description: Shipment status updates
+paths:
+  /shipments/{shipmentId}/status-updates:
+    get:
+      operationId: getShipmentStatusUpdates
+      summary: Get shipment status updates
+      description: Returns the timeline of status updates and events for a shipment.
+      tags:
+      - Status
+      parameters:
+      - $ref: '#/components/parameters/ShipmentId'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: Status update history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusUpdates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusUpdate'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    StatusUpdate:
+      type: object
+      properties:
+        updateId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        statusCode:
+          type: string
+        statusDescription:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        isException:
+          type: boolean
+        exceptionCode:
+          type: string
+          nullable: true
+        source:
+          type: string
+          enum:
+          - CARRIER_EDI
+          - CARRIER_API
+          - TELEMATICS
+          - MANUAL
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+  parameters:
+    ShipmentId:
+      name: shipmentId
+      in: path
+      required: true
+      description: project44 shipment identifier
+      schema:
+        type: string
+        format: uuid
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.project44.com/api/v4/oauth2/token
+          scopes:
+            tracking.read: Read shipment tracking data
+            tracking.write: Create and manage shipments
+            webhooks.write: Manage webhook subscriptions
