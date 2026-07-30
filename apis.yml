@@ -4,7 +4,20 @@ name: project44
 kind: company
 description: project44 is the supply chain visibility platform that connects, automates,
   and provides predictive analytics across multimodal shipments worldwide.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/project44.png
 tags:
 - Logistics
 - Supply Chain Visibility
@@ -15,27 +28,70 @@ created: '2026-05-08'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-- aid: project44:project44-api
-  name: project44 API v4
-  description: project44 API v4 covers shipment tracking, LTL, TL, multimodal services,
-    capacity management, YMS appointments, and webhooks. Production endpoints exist
-    for Americas (na12) and Europe (eu12) regions, with sandbox environments available.
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+- aid: project44:project44-shipments-api
+  name: project44 Shipments API
+  description: Shipment tracking and management
   humanURL: https://developers.project44.com/
   baseURL: https://na12.api.project44.com/api/v4
   tags:
-  - Logistics
-  - Tracking
-  - REST
+  - Shipments
   properties:
+  - type: OpenAPI
+    url: openapi/project44-shipments-api-openapi.yml
   - type: Documentation
     url: https://developers.project44.com/
   - type: Authentication
     url: https://developers.project44.com/authentication
+  - type: GraphQL
+    url: graphql/project44-graphql.md
+- aid: project44:project44-status-api
+  name: project44 Status API
+  description: Shipment status updates
+  humanURL: https://developers.project44.com/
+  baseURL: https://na12.api.project44.com/api/v4
+  tags:
+  - Status
+  properties:
   - type: OpenAPI
-    url: openapi/project44-tracking-openapi.yml
-  - url: graphql/project44-graphql.md
-    type: GraphQL
+    url: openapi/project44-status-api-openapi.yml
+  - type: Documentation
+    url: https://developers.project44.com/
+  - type: Authentication
+    url: https://developers.project44.com/authentication
+  - type: GraphQL
+    url: graphql/project44-graphql.md
+- aid: project44:project44-tracking-api
+  name: project44 Tracking API
+  description: Real-time position and event tracking
+  humanURL: https://developers.project44.com/
+  baseURL: https://na12.api.project44.com/api/v4
+  tags:
+  - Tracking
+  properties:
+  - type: OpenAPI
+    url: openapi/project44-tracking-api-openapi.yml
+  - type: Documentation
+    url: https://developers.project44.com/
+  - type: Authentication
+    url: https://developers.project44.com/authentication
+  - type: GraphQL
+    url: graphql/project44-graphql.md
+- aid: project44:project44-webhooks-api
+  name: project44 Webhooks API
+  description: Webhook subscription management
+  humanURL: https://developers.project44.com/
+  baseURL: https://na12.api.project44.com/api/v4
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/project44-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developers.project44.com/
+  - type: Authentication
+    url: https://developers.project44.com/authentication
+  - type: GraphQL
+    url: graphql/project44-graphql.md
 common:
 - type: AgenticAccess
   url: agentic-access/project44-agentic-access.yml
