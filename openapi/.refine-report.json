@@ -1,0 +1,20 @@
+{
+  "provider": "project44",
+  "sources": [
+    "project44-shipments-api-openapi.yml",
+    "project44-status-api-openapi.yml",
+    "project44-tracking-api-openapi.yml",
+    "project44-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "project44-shipments-api-openapi.yml",
+    "project44-status-api-openapi.yml",
+    "project44-tracking-api-openapi.yml",
+    "project44-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
