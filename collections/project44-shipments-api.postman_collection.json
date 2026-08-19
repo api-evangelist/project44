@@ -1,0 +1,690 @@
+{
+  "item": [
+    {
+      "id": "b0e4fe2c-809a-47de-876b-7e52ec718556",
+      "name": "Shipments",
+      "description": {
+        "content": "Shipment tracking and management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "700344be-0a45-4104-a1f6-96d287c99bbd",
+          "name": "Create a tracked shipment",
+          "request": {
+            "name": "Create a tracked shipment",
+            "description": {
+              "content": "Creates a new shipment to track, associating it with carrier and identifier information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "shipments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mode\": \"<string>\",\n  \"carrierCode\": \"<string>\",\n  \"identifiers\": [\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"stops\": [\n    {\n      \"stopNumber\": \"<integer>\",\n      \"stopType\": \"<string>\",\n      \"city\": \"<string>\",\n      \"state\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"<dateTime>\",\n        \"endDateTime\": \"<dateTime>\"\n      }\n    },\n    {\n      \"stopNumber\": \"<integer>\",\n      \"stopType\": \"<string>\",\n      \"city\": \"<string>\",\n      \"state\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"<dateTime>\",\n        \"endDateTime\": \"<dateTime>\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5022bb3e-ee87-4760-809c-15fdd67355a9",
+              "name": "Shipment created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"<string>\",\n  \"carrierCode\": \"<string>\",\n  \"identifiers\": [\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"stops\": [\n    {\n      \"stopNumber\": 5786,\n      \"stopType\": \"INTERMEDIATE\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"1998-06-06T17:59:57.744Z\",\n        \"endDateTime\": \"2008-02-20T20:14:20.186Z\"\n      }\n    },\n    {\n      \"stopNumber\": 7335,\n      \"stopType\": \"ORIGIN\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"1999-06-15T22:13:57.373Z\",\n        \"endDateTime\": \"1957-03-17T07:34:14.675Z\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"59c054f1-0941-fdd0-7763-0fa7c4e10af9\",\n  \"masterShipmentId\": \"string\",\n  \"mode\": \"PARCEL\",\n  \"status\": \"COMPLETED\",\n  \"carrierCode\": \"string\",\n  \"carrierName\": \"string\",\n  \"proNumber\": \"string\",\n  \"bolNumber\": \"string\",\n  \"poNumber\": \"string\",\n  \"origin\": {\n    \"stopNumber\": 3437,\n    \"stopType\": \"INTERMEDIATE\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"str\",\n    \"latitude\": 1542.2114168483492,\n    \"longitude\": 873.9096513475108,\n    \"appointmentWindow\": {\n      \"startDateTime\": \"1965-07-08T13:32:42.154Z\",\n      \"endDateTime\": \"1993-05-04T22:30:25.760Z\"\n    },\n    \"actualArrival\": \"1978-06-22T21:27:20.027Z\",\n    \"actualDeparture\": \"2000-09-28T12:32:16.558Z\"\n  },\n  \"destination\": {\n    \"stopNumber\": 2082,\n    \"stopType\": \"DESTINATION\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"str\",\n    \"latitude\": 9023.54086599782,\n    \"longitude\": 8384.331949284684,\n    \"appointmentWindow\": {\n      \"startDateTime\": \"2000-02-05T13:04:42.538Z\",\n      \"endDateTime\": \"2021-07-06T23:23:10.156Z\"\n    },\n    \"actualArrival\": \"1975-05-02T07:08:19.395Z\",\n    \"actualDeparture\": \"1950-02-03T13:16:36.588Z\"\n  },\n  \"estimatedDelivery\": {\n    \"estimatedAt\": \"2001-02-26T01:09:48.633Z\",\n    \"confidenceLow\": \"2013-02-26T09:42:15.482Z\",\n    \"confidenceHigh\": \"2002-03-14T00:43:48.883Z\",\n    \"predictedOnTime\": false,\n    \"predictedLateMinutes\": 3492\n  },\n  \"currentPosition\": {\n    \"timestamp\": \"1975-10-19T01:23:48.719Z\",\n    \"latitude\": 2855.085161901424,\n    \"longitude\": 5552.549422897742,\n    \"heading\": 7684.56246983135,\n    \"speed\": 6197.572480823026,\n    \"speedUnit\": \"KPH\"\n  },\n  \"exceptions\": [\n    {\n      \"exceptionCode\": \"string\",\n      \"description\": \"string\",\n      \"severity\": \"MEDIUM\",\n      \"timestamp\": \"1978-02-16T11:10:58.571Z\",\n      \"resolvedAt\": \"1973-11-23T12:20:20.460Z\"\n    },\n    {\n      \"exceptionCode\": \"string\",\n      \"description\": \"string\",\n      \"severity\": \"LOW\",\n      \"timestamp\": \"2024-01-19T23:56:54.380Z\",\n      \"resolvedAt\": \"2006-06-05T20:31:38.063Z\"\n    }\n  ],\n  \"createDatetime\": \"2001-02-25T22:22:08.584Z\",\n  \"lastUpdateDatetime\": \"1960-02-06T11:05:06.440Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "726e8a28-0f81-47ff-9253-2a26912776a6",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"<string>\",\n  \"carrierCode\": \"<string>\",\n  \"identifiers\": [\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"stops\": [\n    {\n      \"stopNumber\": 5786,\n      \"stopType\": \"INTERMEDIATE\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"1998-06-06T17:59:57.744Z\",\n        \"endDateTime\": \"2008-02-20T20:14:20.186Z\"\n      }\n    },\n    {\n      \"stopNumber\": 7335,\n      \"stopType\": \"ORIGIN\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"1999-06-15T22:13:57.373Z\",\n        \"endDateTime\": \"1957-03-17T07:34:14.675Z\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eaccbc41-9a2d-4480-89aa-dcb454cd7f52",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mode\": \"<string>\",\n  \"carrierCode\": \"<string>\",\n  \"identifiers\": [\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"stops\": [\n    {\n      \"stopNumber\": 5786,\n      \"stopType\": \"INTERMEDIATE\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"1998-06-06T17:59:57.744Z\",\n        \"endDateTime\": \"2008-02-20T20:14:20.186Z\"\n      }\n    },\n    {\n      \"stopNumber\": 7335,\n      \"stopType\": \"ORIGIN\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"appointmentWindow\": {\n        \"startDateTime\": \"1999-06-15T22:13:57.373Z\",\n        \"endDateTime\": \"1957-03-17T07:34:14.675Z\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a4f51c4-d6c4-4f0f-a462-6a2f615b35d7",
+          "name": "List tracked shipments",
+          "request": {
+            "name": "List tracked shipments",
+            "description": {
+              "content": "Returns a paginated list of tracked shipments with current status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "shipments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by shipment lifecycle status"
+                },
+                {
+                  "disabled": false,
+                  "key": "mode",
+                  "value": "<string>",
+                  "description": "Transportation mode filter"
+                },
+                {
+                  "disabled": false,
+                  "key": "carrierId",
+                  "value": "<string>",
+                  "description": "Carrier SCAC code or project44 carrier ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "updatedSince",
+                  "value": "<dateTime>",
+                  "description": "Return shipments updated after this ISO 8601 timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0f958492-f00b-44d4-a757-bbaa592d174a",
+              "name": "Shipment list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "carrierId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "updatedSince",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"shipments\": [\n    {\n      \"id\": \"2e5d2f39-06ca-1ce4-e6eb-a5a32a24b5e1\",\n      \"masterShipmentId\": \"string\",\n      \"mode\": \"RAIL\",\n      \"status\": \"IN_TRANSIT\",\n      \"carrierCode\": \"string\",\n      \"carrierName\": \"string\",\n      \"proNumber\": \"string\",\n      \"bolNumber\": \"string\",\n      \"poNumber\": \"string\",\n      \"origin\": {\n        \"stopNumber\": 3191,\n        \"stopType\": \"ORIGIN\",\n        \"name\": \"string\",\n        \"address\": \"string\",\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"postalCode\": \"string\",\n        \"country\": \"str\",\n        \"latitude\": 9926.625242544596,\n        \"longitude\": 1678.3300642749932,\n        \"appointmentWindow\": {\n          \"startDateTime\": \"1963-05-31T09:55:52.107Z\",\n          \"endDateTime\": \"1997-07-07T11:45:29.387Z\"\n        },\n        \"actualArrival\": \"1999-02-13T12:29:23.181Z\",\n        \"actualDeparture\": \"2005-02-21T11:21:57.542Z\"\n      },\n      \"destination\": {\n        \"stopNumber\": 6940,\n        \"stopType\": \"DESTINATION\",\n        \"name\": \"string\",\n        \"address\": \"string\",\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"postalCode\": \"string\",\n        \"country\": \"str\",\n        \"latitude\": 5642.387222779034,\n        \"longitude\": 2018.3413854254727,\n        \"appointmentWindow\": {\n          \"startDateTime\": \"1981-01-28T09:04:12.894Z\",\n          \"endDateTime\": \"1972-07-09T20:15:57.637Z\"\n        },\n        \"actualArrival\": \"2015-06-08T14:05:09.425Z\",\n        \"actualDeparture\": \"2021-09-07T01:25:06.261Z\"\n      },\n      \"estimatedDelivery\": {\n        \"estimatedAt\": \"1957-01-23T09:25:01.515Z\",\n        \"confidenceLow\": \"1980-11-19T11:02:25.942Z\",\n        \"confidenceHigh\": \"1998-10-02T06:03:26.087Z\",\n        \"predictedOnTime\": true,\n        \"predictedLateMinutes\": 3784\n      },\n      \"currentPosition\": {\n        \"timestamp\": \"2026-05-02T02:47:03.449Z\",\n        \"latitude\": 5951.136755569938,\n        \"longitude\": 2862.359105454123,\n        \"heading\": 5716.588008133155,\n        \"speed\": 265.10233184203645,\n        \"speedUnit\": \"MPH\"\n      },\n      \"exceptions\": [\n        {\n          \"exceptionCode\": \"string\",\n          \"description\": \"string\",\n          \"severity\": \"CRITICAL\",\n          \"timestamp\": \"1964-01-25T00:56:35.674Z\",\n          \"resolvedAt\": \"1948-04-07T18:58:20.017Z\"\n        },\n        {\n          \"exceptionCode\": \"string\",\n          \"description\": \"string\",\n          \"severity\": \"CRITICAL\",\n          \"timestamp\": \"2020-11-02T03:36:02.833Z\",\n          \"resolvedAt\": \"1959-10-13T07:42:39.752Z\"\n        }\n      ],\n      \"createDatetime\": \"1949-07-05T20:52:26.474Z\",\n      \"lastUpdateDatetime\": \"1949-08-05T14:46:57.640Z\"\n    },\n    {\n      \"id\": \"31a44df8-dde6-4665-7e2d-dc96f4e1e02e\",\n      \"masterShipmentId\": \"string\",\n      \"mode\": \"DRAY\",\n      \"status\": \"EXCEPTION\",\n      \"carrierCode\": \"string\",\n      \"carrierName\": \"string\",\n      \"proNumber\": \"string\",\n      \"bolNumber\": \"string\",\n      \"poNumber\": \"string\",\n      \"origin\": {\n        \"stopNumber\": 9043,\n        \"stopType\": \"DESTINATION\",\n        \"name\": \"string\",\n        \"address\": \"string\",\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"postalCode\": \"string\",\n        \"country\": \"str\",\n        \"latitude\": 2212.0859495238055,\n        \"longitude\": 9391.119305227021,\n        \"appointmentWindow\": {\n          \"startDateTime\": \"2020-02-25T19:50:07.797Z\",\n          \"endDateTime\": \"1979-10-01T18:56:43.595Z\"\n        },\n        \"actualArrival\": \"1992-12-05T02:10:04.990Z\",\n        \"actualDeparture\": \"1972-08-18T08:19:52.699Z\"\n      },\n      \"destination\": {\n        \"stopNumber\": 502,\n        \"stopType\": \"DESTINATION\",\n        \"name\": \"string\",\n        \"address\": \"string\",\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"postalCode\": \"string\",\n        \"country\": \"str\",\n        \"latitude\": 3182.8841186518466,\n        \"longitude\": 9654.909446730879,\n        \"appointmentWindow\": {\n          \"startDateTime\": \"1994-04-28T03:03:42.953Z\",\n          \"endDateTime\": \"2008-12-30T05:54:53.807Z\"\n        },\n        \"actualArrival\": \"2026-03-28T08:40:52.927Z\",\n        \"actualDeparture\": \"1990-11-06T13:56:39.091Z\"\n      },\n      \"estimatedDelivery\": {\n        \"estimatedAt\": \"2007-02-05T22:16:10.438Z\",\n        \"confidenceLow\": \"1970-11-07T14:24:31.083Z\",\n        \"confidenceHigh\": \"1986-08-20T16:42:51.686Z\",\n        \"predictedOnTime\": false,\n        \"predictedLateMinutes\": 1532\n      },\n      \"currentPosition\": {\n        \"timestamp\": \"2010-09-22T01:27:57.006Z\",\n        \"latitude\": 6038.8754971082335,\n        \"longitude\": 1868.4190453566673,\n        \"heading\": 6344.697207903657,\n        \"speed\": 4560.386813539469,\n        \"speedUnit\": \"KPH\"\n      },\n      \"exceptions\": [\n        {\n          \"exceptionCode\": \"string\",\n          \"description\": \"string\",\n          \"severity\": \"CRITICAL\",\n          \"timestamp\": \"2005-08-05T21:15:43.355Z\",\n          \"resolvedAt\": \"1969-04-24T08:22:36.417Z\"\n        },\n        {\n          \"exceptionCode\": \"string\",\n          \"description\": \"string\",\n          \"severity\": \"CRITICAL\",\n          \"timestamp\": \"2016-05-16T17:34:46.954Z\",\n          \"resolvedAt\": \"1996-12-28T11:58:58.805Z\"\n        }\n      ],\n      \"createDatetime\": \"1976-08-04T13:43:33.877Z\",\n      \"lastUpdateDatetime\": \"1971-07-07T02:18:25.993Z\"\n    }\n  ],\n  \"pageInfo\": {\n    \"page\": 8400,\n    \"pageSize\": 3567,\n    \"totalCount\": 2840,\n    \"hasNextPage\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "435c1219-e7fd-4f86-a1c5-bfee3705be82",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "carrierId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "updatedSince",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0d50b87d-05bc-4b9f-be4a-bd8af0c4671c",
+          "name": "Get a shipment",
+          "request": {
+            "name": "Get a shipment",
+            "description": {
+              "content": "Returns current status, position, ETA, and event history for a shipment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "shipments",
+                ":shipmentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipmentId",
+                  "description": "(Required) project44 shipment identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "45549141-6ead-4685-a0cc-93445556b223",
+              "name": "Shipment details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments",
+                    ":shipmentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipmentId",
+                      "description": "(Required) project44 shipment identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"fb234efa-9270-21c0-f400-c22d5cffc89a\",\n  \"masterShipmentId\": \"string\",\n  \"mode\": \"TL\",\n  \"status\": \"EXCEPTION\",\n  \"carrierCode\": \"string\",\n  \"carrierName\": \"string\",\n  \"proNumber\": \"string\",\n  \"bolNumber\": \"string\",\n  \"poNumber\": \"string\",\n  \"origin\": {\n    \"stopNumber\": 5923,\n    \"stopType\": \"DESTINATION\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"str\",\n    \"latitude\": 6977.392412787431,\n    \"longitude\": 5107.486418366687,\n    \"appointmentWindow\": {\n      \"startDateTime\": \"2002-09-05T16:31:08.138Z\",\n      \"endDateTime\": \"2025-08-18T11:40:33.236Z\"\n    },\n    \"actualArrival\": \"2020-04-23T20:33:29.806Z\",\n    \"actualDeparture\": \"2023-08-06T17:12:49.130Z\"\n  },\n  \"destination\": {\n    \"stopNumber\": 3948,\n    \"stopType\": \"INTERMEDIATE\",\n    \"name\": \"string\",\n    \"address\": \"string\",\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"str\",\n    \"latitude\": 6423.841699437133,\n    \"longitude\": 5920.6733750117255,\n    \"appointmentWindow\": {\n      \"startDateTime\": \"2023-10-27T07:09:08.621Z\",\n      \"endDateTime\": \"2007-06-03T19:21:25.452Z\"\n    },\n    \"actualArrival\": \"2014-04-06T06:12:11.940Z\",\n    \"actualDeparture\": \"1964-12-02T03:54:59.914Z\"\n  },\n  \"estimatedDelivery\": {\n    \"estimatedAt\": \"1999-05-24T18:08:53.567Z\",\n    \"confidenceLow\": \"1952-08-09T21:15:58.772Z\",\n    \"confidenceHigh\": \"2010-01-14T17:51:40.470Z\",\n    \"predictedOnTime\": true,\n    \"predictedLateMinutes\": 3665\n  },\n  \"currentPosition\": {\n    \"timestamp\": \"1959-04-30T10:44:32.373Z\",\n    \"latitude\": 2494.9721618375243,\n    \"longitude\": 5480.728021036242,\n    \"heading\": 1988.3983240218638,\n    \"speed\": 46.4637629053255,\n    \"speedUnit\": \"MPH\"\n  },\n  \"exceptions\": [\n    {\n      \"exceptionCode\": \"string\",\n      \"description\": \"string\",\n      \"severity\": \"HIGH\",\n      \"timestamp\": \"1965-11-28T19:31:39.715Z\",\n      \"resolvedAt\": \"1950-02-28T21:40:01.827Z\"\n    },\n    {\n      \"exceptionCode\": \"string\",\n      \"description\": \"string\",\n      \"severity\": \"LOW\",\n      \"timestamp\": \"2016-08-29T13:36:36.169Z\",\n      \"resolvedAt\": \"1964-02-11T06:37:14.367Z\"\n    }\n  ],\n  \"createDatetime\": \"1981-09-20T01:05:43.384Z\",\n  \"lastUpdateDatetime\": \"1997-08-21T02:17:26.409Z\",\n  \"stops\": [\n    {\n      \"stopNumber\": 2994,\n      \"stopType\": \"DESTINATION\",\n      \"name\": \"string\",\n      \"address\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"latitude\": 6935.336413930775,\n      \"longitude\": 7327.866783714341,\n      \"appointmentWindow\": {\n        \"startDateTime\": \"1969-12-19T01:22:42.147Z\",\n        \"endDateTime\": \"2008-09-09T02:25:34.147Z\"\n      },\n      \"actualArrival\": \"1975-07-23T14:46:00.012Z\",\n      \"actualDeparture\": \"1959-03-27T23:29:40.958Z\"\n    },\n    {\n      \"stopNumber\": 2092,\n      \"stopType\": \"ORIGIN\",\n      \"name\": \"string\",\n      \"address\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"str\",\n      \"latitude\": 8676.7144197008,\n      \"longitude\": 492.7147492684514,\n      \"appointmentWindow\": {\n        \"startDateTime\": \"2003-02-21T16:02:56.744Z\",\n        \"endDateTime\": \"2024-12-21T01:38:55.805Z\"\n      },\n      \"actualArrival\": \"1952-05-30T08:04:34.925Z\",\n      \"actualDeparture\": \"1949-01-19T16:51:44.565Z\"\n    }\n  ],\n  \"statusUpdates\": [\n    {\n      \"updateId\": \"string\",\n      \"timestamp\": \"2013-08-10T01:16:39.537Z\",\n      \"statusCode\": \"string\",\n      \"statusDescription\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"str\",\n      \"isException\": false,\n      \"exceptionCode\": \"string\",\n      \"source\": \"CARRIER_EDI\"\n    },\n    {\n      \"updateId\": \"string\",\n      \"timestamp\": \"1954-05-23T02:36:43.900Z\",\n      \"statusCode\": \"string\",\n      \"statusDescription\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"str\",\n      \"isException\": false,\n      \"exceptionCode\": \"string\",\n      \"source\": \"CARRIER_EDI\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "709ebaa7-4e39-49dc-a530-e51858bad0eb",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments",
+                    ":shipmentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipmentId",
+                      "description": "(Required) project44 shipment identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6e2a4bd2-33d7-4bd2-882f-f4f24523b3d8",
+          "name": "Stop tracking a shipment",
+          "request": {
+            "name": "Stop tracking a shipment",
+            "description": {
+              "content": "Removes a shipment from active tracking.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "shipments",
+                ":shipmentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipmentId",
+                  "description": "(Required) project44 shipment identifier"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "79b83e09-decd-4dd0-b582-162e51e2c690",
+              "name": "Shipment deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments",
+                    ":shipmentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipmentId",
+                      "description": "(Required) project44 shipment identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.project44.com/api/v4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "tracking.read tracking.write webhooks.write"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.project44.com/api/v4/oauth2/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4e86751a-db7c-4a2a-b784-a53ce8922aa4",
+    "name": "project44 Tracking Shipments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "project44 Tracking API provides real-time shipment tracking and visibility for multimodal freight including truckload (TL), LTL, ocean, rail, air, and parcel. APIs deliver shipment status updates, predictive ETAs, and exception alerts.\n\nContact Support:\n Name: project44 Support",
+      "type": "text/plain"
+    }
+  }
+}

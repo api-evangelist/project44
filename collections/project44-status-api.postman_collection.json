@@ -1,0 +1,216 @@
+{
+  "item": [
+    {
+      "id": "69f183aa-18f0-460f-8f8f-366326e7877f",
+      "name": "Status",
+      "description": {
+        "content": "Shipment status updates",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "42c5d014-5c73-4a41-848e-42bcb2ba4089",
+          "name": "Get shipment status updates",
+          "request": {
+            "name": "Get shipment status updates",
+            "description": {
+              "content": "Returns the timeline of status updates and events for a shipment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "shipments",
+                ":shipmentId",
+                "status-updates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "shipmentId",
+                  "description": "(Required) project44 shipment identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8c0636fa-d9c4-4468-b49a-c7e1418eac1e",
+              "name": "Status update history",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments",
+                    ":shipmentId",
+                    "status-updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipmentId",
+                      "description": "(Required) project44 shipment identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusUpdates\": [\n    {\n      \"updateId\": \"string\",\n      \"timestamp\": \"1990-02-13T19:09:19.577Z\",\n      \"statusCode\": \"string\",\n      \"statusDescription\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"str\",\n      \"isException\": false,\n      \"exceptionCode\": \"string\",\n      \"source\": \"CARRIER_API\"\n    },\n    {\n      \"updateId\": \"string\",\n      \"timestamp\": \"1966-10-08T08:55:33.681Z\",\n      \"statusCode\": \"string\",\n      \"statusDescription\": \"string\",\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"str\",\n      \"isException\": true,\n      \"exceptionCode\": \"string\",\n      \"source\": \"TELEMATICS\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "287deb1d-7ca8-4d35-b55c-cacbf034a796",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shipments",
+                    ":shipmentId",
+                    "status-updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "shipmentId",
+                      "description": "(Required) project44 shipment identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.project44.com/api/v4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "tracking.read tracking.write webhooks.write"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://api.project44.com/api/v4/oauth2/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1db841f2-7487-41de-ae99-981b2f6e2ede",
+    "name": "project44 Tracking Shipments Status API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "project44 Tracking API provides real-time shipment tracking and visibility for multimodal freight including truckload (TL), LTL, ocean, rail, air, and parcel. APIs deliver shipment status updates, predictive ETAs, and exception alerts.\n\nContact Support:\n Name: project44 Support",
+      "type": "text/plain"
+    }
+  }
+}
