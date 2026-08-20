@@ -23,6 +23,12 @@ tags:
 - Supply Chain Visibility
 - Tracking
 - Freight
+- Multi-Modal
+tags_raw:
+- Logistics
+- Supply Chain Visibility
+- Tracking
+- Freight
 - Multi-modal
 created: '2026-05-08'
 modified: '2026-05-19'
@@ -82,6 +88,8 @@ apis:
   humanURL: https://developers.project44.com/
   baseURL: https://na12.api.project44.com/api/v4
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
