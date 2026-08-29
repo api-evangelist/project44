@@ -113,6 +113,9 @@ apis:
   - type: GraphQL
     url: graphql/project44-graphql.md
 common:
+- type: CapabilityMap
+  url: capabilities/project44-capability-edges.yml
+  name: project44 Business Capability Map
 - type: AgenticAccess
   url: agentic-access/project44-agentic-access.yml
 - type: TrustCenter

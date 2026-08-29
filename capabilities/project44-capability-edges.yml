@@ -1,0 +1,45 @@
+slug: project44
+provider: project44
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Shipments
+  spec_file: project44-shipments-api-openapi.yml
+  capability_id: BC-2510.20
+  capability_id_l1: BC-2510
+  capability_name: Shipment Tracking Management
+  confidence: 0.9
+  evidence: POST /shipments 'Create a tracked shipment'; DELETE /shipments/{shipmentId} 'Stop tracking
+    a shipment'; 'real-time shipment tracking and visibility for multimodal freight'
+  reason: The shipment object here exists to be tracked across legs and modes (stops, ETAWindow, ShipmentException),
+    which is squarely shipment tracking/visibility rather than transport execution or booking.
+- tag: Status
+  spec_file: project44-status-api-openapi.yml
+  capability_id: BC-2510.10
+  capability_id_l1: BC-2510
+  capability_name: Event Capture and Status Management
+  confidence: 0.85
+  evidence: GET /shipments/{shipmentId}/status-updates getShipmentStatusUpdates 'Get shipment status updates';
+    schema StatusUpdate
+  reason: Retrieval of canonical shipment status events captured from carriers — event capture and status
+    management within shipment visibility.
+- tag: Tracking
+  spec_file: project44-tracking-api-openapi.yml
+  capability_id: BC-2510.20
+  capability_id_l1: BC-2510
+  capability_name: Shipment Tracking Management
+  confidence: 0.85
+  evidence: GET /shipments/{shipmentId}/positions getShipmentPositions 'Get shipment position history';
+    schema Position
+  reason: Positional history of a shipment served to internal and customer-facing tracking views; this
+    is shipment tracking resolution, not fleet telematics, since the subject is the shipment not the asset.
