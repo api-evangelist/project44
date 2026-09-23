@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: project44 Tracking Shipments API
   description: project44 Tracking API provides real-time shipment tracking and visibility for multimodal freight including truckload (TL), LTL, ocean, rail, air, and parcel. APIs deliver shipment status updates, predictive ETAs, and exception alerts.
@@ -141,12 +141,28 @@ paths:
         '204':
           description: Shipment deleted
 components:
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ShipmentStopInput:
+    ShipmentStop:
       type: object
-      required:
-      - stopNumber
-      - stopType
       properties:
         stopNumber:
           type: integer
@@ -156,6 +172,10 @@ components:
           - ORIGIN
           - DESTINATION
           - INTERMEDIATE
+        name:
+          type: string
+        address:
+          type: string
         city:
           type: string
         state:
@@ -165,104 +185,22 @@ components:
         country:
           type: string
           maxLength: 3
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
         appointmentWindow:
           $ref: '#/components/schemas/TimeWindow'
-    PageInfo:
-      type: object
-      properties:
-        page:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
-        hasNextPage:
-          type: boolean
-    Shipment:
-      type: object
-      description: A tracked freight shipment
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: project44 internal shipment ID
-        masterShipmentId:
-          type: string
-          description: Unique master shipment ID across modes
-        mode:
-          type: string
-          enum:
-          - TL
-          - LTL
-          - OCEAN
-          - AIR
-          - RAIL
-          - PARCEL
-          - DRAY
-        status:
-          type: string
-          enum:
-          - AT_STOP
-          - IN_TRANSIT
-          - COMPLETED
-          - EXCEPTION
-          - UNKNOWN
-        carrierCode:
-          type: string
-          description: Carrier SCAC code
-        carrierName:
-          type: string
-        proNumber:
-          type: string
-          description: PRO/tracking number
-        bolNumber:
-          type: string
-          description: Bill of lading number
-        poNumber:
-          type: string
-          description: Purchase order number
-        origin:
-          $ref: '#/components/schemas/ShipmentStop'
-        destination:
-          $ref: '#/components/schemas/ShipmentStop'
-        estimatedDelivery:
-          $ref: '#/components/schemas/ETAWindow'
-        currentPosition:
-          $ref: '#/components/schemas/Position'
-        exceptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/ShipmentException'
-        createDatetime:
+        actualArrival:
           type: string
           format: date-time
-        lastUpdateDatetime:
+          nullable: true
+        actualDeparture:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-    ShipmentDetail:
-      allOf:
-      - $ref: '#/components/schemas/Shipment'
-      - type: object
-        properties:
-          stops:
-            type: array
-            items:
-              $ref: '#/components/schemas/ShipmentStop'
-          statusUpdates:
-            type: array
-            items:
-              $ref: '#/components/schemas/StatusUpdate'
+          nullable: true
     ShipmentCreate:
       type: object
       required:
@@ -324,46 +262,6 @@ components:
         predictedLateMinutes:
           type: integer
           nullable: true
-    ShipmentStop:
-      type: object
-      properties:
-        stopNumber:
-          type: integer
-        stopType:
-          type: string
-          enum:
-          - ORIGIN
-          - DESTINATION
-          - INTERMEDIATE
-        name:
-          type: string
-        address:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        postalCode:
-          type: string
-        country:
-          type: string
-          maxLength: 3
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-        appointmentWindow:
-          $ref: '#/components/schemas/TimeWindow'
-        actualArrival:
-          type: string
-          format: date-time
-          nullable: true
-        actualDeparture:
-          type: string
-          format: date-time
-          nullable: true
     StatusUpdate:
       type: object
       properties:
@@ -395,6 +293,28 @@ components:
           - CARRIER_API
           - TELEMATICS
           - MANUAL
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+    PageInfo:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+        hasNextPage:
+          type: boolean
     ShipmentException:
       type: object
       properties:
@@ -416,15 +336,6 @@ components:
           type: string
           format: date-time
           nullable: true
-    TimeWindow:
-      type: object
-      properties:
-        startDateTime:
-          type: string
-          format: date-time
-        endDateTime:
-          type: string
-          format: date-time
     Position:
       type: object
       properties:
@@ -450,25 +361,114 @@ components:
           enum:
           - MPH
           - KPH
-  responses:
-    Unauthorized:
-      description: Authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    ShipmentDetail:
+      allOf:
+      - $ref: '#/components/schemas/Shipment'
+      - type: object
+        properties:
+          stops:
+            type: array
+            items:
+              $ref: '#/components/schemas/ShipmentStop'
+          statusUpdates:
+            type: array
+            items:
+              $ref: '#/components/schemas/StatusUpdate'
+    Shipment:
+      type: object
+      description: A tracked freight shipment
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: project44 internal shipment ID
+        masterShipmentId:
+          type: string
+          description: Unique master shipment ID across modes
+        mode:
+          type: string
+          enum:
+          - TL
+          - LTL
+          - OCEAN
+          - AIR
+          - RAIL
+          - PARCEL
+          - DRAY
+        status:
+          type: string
+          enum:
+          - AT_STOP
+          - IN_TRANSIT
+          - COMPLETED
+          - EXCEPTION
+          - UNKNOWN
+        carrierCode:
+          type: string
+          description: Carrier SCAC code
+        carrierName:
+          type: string
+        proNumber:
+          type: string
+          description: PRO/tracking number
+        bolNumber:
+          type: string
+          description: Bill of lading number
+        poNumber:
+          type: string
+          description: Purchase order number
+        origin:
+          $ref: '#/components/schemas/ShipmentStop'
+        destination:
+          $ref: '#/components/schemas/ShipmentStop'
+        estimatedDelivery:
+          $ref: '#/components/schemas/ETAWindow'
+        currentPosition:
+          $ref: '#/components/schemas/Position'
+        exceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentException'
+        createDatetime:
+          type: string
+          format: date-time
+        lastUpdateDatetime:
+          type: string
+          format: date-time
+    ShipmentStopInput:
+      type: object
+      required:
+      - stopNumber
+      - stopType
+      properties:
+        stopNumber:
+          type: integer
+        stopType:
+          type: string
+          enum:
+          - ORIGIN
+          - DESTINATION
+          - INTERMEDIATE
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        appointmentWindow:
+          $ref: '#/components/schemas/TimeWindow'
+    TimeWindow:
+      type: object
+      properties:
+        startDateTime:
+          type: string
+          format: date-time
+        endDateTime:
+          type: string
+          format: date-time
   parameters:
     ShipmentId:
       name: shipmentId

@@ -1,0 +1,32 @@
+# Front Door AI Index — project44 — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: project44
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.project44.com
+  final_host: www.project44.com
+  ownership: own
+  owner: project44
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 29
+  host_score: 29
+  density: 9.89
+  words: 2932
+  tiers:
+    agentic: 10
+    core: 19
+    model: 0
+  ambiguous: 37
+  top_terms:
+    AI: 19
+    intelligence: 13
+    agent: 11
+    AI agent: 7
+    predictive: 6
+    smart: 4
+    agentic: 3
+    automation: 3

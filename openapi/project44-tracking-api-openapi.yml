@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: project44 Shipments Tracking API
+  title: project44 Tracking API
   description: project44 Tracking API provides real-time shipment tracking and visibility for multimodal freight including truckload (TL), LTL, ocean, rail, air, and parcel. APIs deliver shipment status updates, predictive ETAs, and exception alerts.
   version: 2.0.0
   contact:
@@ -57,34 +57,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    ShipmentId:
-      name: shipmentId
-      in: path
-      required: true
-      description: project44 shipment identifier
-      schema:
-        type: string
-        format: uuid
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
     Position:
       type: object
       properties:
@@ -110,6 +83,33 @@ components:
           enum:
           - MPH
           - KPH
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+  parameters:
+    ShipmentId:
+      name: shipmentId
+      in: path
+      required: true
+      description: project44 shipment identifier
+      schema:
+        type: string
+        format: uuid
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth2:
       type: oauth2
