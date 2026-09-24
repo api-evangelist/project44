@@ -60,8 +60,6 @@ apis:
     url: https://developers.project44.com/
   - type: Authentication
     url: https://developers.project44.com/authentication
-  - type: GraphQL
-    url: graphql/project44-graphql.md
 - aid: project44:project44-status-api
   name: project44 Status API
   description: Shipment status updates
@@ -76,8 +74,6 @@ apis:
     url: https://developers.project44.com/
   - type: Authentication
     url: https://developers.project44.com/authentication
-  - type: GraphQL
-    url: graphql/project44-graphql.md
 - aid: project44:project44-tracking-api
   name: project44 Tracking API
   description: Real-time position and event tracking
@@ -92,8 +88,6 @@ apis:
     url: https://developers.project44.com/
   - type: Authentication
     url: https://developers.project44.com/authentication
-  - type: GraphQL
-    url: graphql/project44-graphql.md
 - aid: project44:project44-webhooks-api
   name: project44 Webhooks API
   description: Webhook subscription management
@@ -110,8 +104,6 @@ apis:
     url: https://developers.project44.com/
   - type: Authentication
     url: https://developers.project44.com/authentication
-  - type: GraphQL
-    url: graphql/project44-graphql.md
 common:
 - type: CapabilityMap
   url: capabilities/project44-capability-edges.yml
