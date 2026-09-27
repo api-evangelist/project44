@@ -141,26 +141,38 @@ paths:
         '204':
           description: Shipment deleted
 components:
-  responses:
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    StatusUpdate:
+      type: object
+      properties:
+        updateId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        statusCode:
+          type: string
+        statusDescription:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        isException:
+          type: boolean
+        exceptionCode:
+          type: string
+          nullable: true
+        source:
+          type: string
+          enum:
+          - CARRIER_EDI
+          - CARRIER_API
+          - TELEMATICS
+          - MANUAL
     ShipmentStop:
       type: object
       properties:
@@ -201,6 +213,76 @@ components:
           type: string
           format: date-time
           nullable: true
+    ShipmentStopInput:
+      type: object
+      required:
+      - stopNumber
+      - stopType
+      properties:
+        stopNumber:
+          type: integer
+        stopType:
+          type: string
+          enum:
+          - ORIGIN
+          - DESTINATION
+          - INTERMEDIATE
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+          maxLength: 3
+        appointmentWindow:
+          $ref: '#/components/schemas/TimeWindow'
+    ShipmentException:
+      type: object
+      properties:
+        exceptionCode:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          - CRITICAL
+        timestamp:
+          type: string
+          format: date-time
+        resolvedAt:
+          type: string
+          format: date-time
+          nullable: true
+    PageInfo:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+        hasNextPage:
+          type: boolean
+    ShipmentDetail:
+      allOf:
+      - $ref: '#/components/schemas/Shipment'
+      - type: object
+        properties:
+          stops:
+            type: array
+            items:
+              $ref: '#/components/schemas/ShipmentStop'
+          statusUpdates:
+            type: array
+            items:
+              $ref: '#/components/schemas/StatusUpdate'
     ShipmentCreate:
       type: object
       required:
@@ -245,135 +327,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShipmentStopInput'
-    ETAWindow:
-      type: object
-      properties:
-        estimatedAt:
-          type: string
-          format: date-time
-        confidenceLow:
-          type: string
-          format: date-time
-        confidenceHigh:
-          type: string
-          format: date-time
-        predictedOnTime:
-          type: boolean
-        predictedLateMinutes:
-          type: integer
-          nullable: true
-    StatusUpdate:
-      type: object
-      properties:
-        updateId:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        statusCode:
-          type: string
-        statusDescription:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        country:
-          type: string
-          maxLength: 3
-        isException:
-          type: boolean
-        exceptionCode:
-          type: string
-          nullable: true
-        source:
-          type: string
-          enum:
-          - CARRIER_EDI
-          - CARRIER_API
-          - TELEMATICS
-          - MANUAL
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-    PageInfo:
-      type: object
-      properties:
-        page:
-          type: integer
-        pageSize:
-          type: integer
-        totalCount:
-          type: integer
-        hasNextPage:
-          type: boolean
-    ShipmentException:
-      type: object
-      properties:
-        exceptionCode:
-          type: string
-        description:
-          type: string
-        severity:
-          type: string
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          - CRITICAL
-        timestamp:
-          type: string
-          format: date-time
-        resolvedAt:
-          type: string
-          format: date-time
-          nullable: true
-    Position:
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-        heading:
-          type: number
-          format: double
-          nullable: true
-        speed:
-          type: number
-          format: double
-          nullable: true
-        speedUnit:
-          type: string
-          enum:
-          - MPH
-          - KPH
-    ShipmentDetail:
-      allOf:
-      - $ref: '#/components/schemas/Shipment'
-      - type: object
-        properties:
-          stops:
-            type: array
-            items:
-              $ref: '#/components/schemas/ShipmentStop'
-          statusUpdates:
-            type: array
-            items:
-              $ref: '#/components/schemas/StatusUpdate'
     Shipment:
       type: object
       description: A tracked freight shipment
@@ -435,31 +388,59 @@ components:
         lastUpdateDatetime:
           type: string
           format: date-time
-    ShipmentStopInput:
+    Position:
       type: object
-      required:
-      - stopNumber
-      - stopType
       properties:
-        stopNumber:
-          type: integer
-        stopType:
+        timestamp:
+          type: string
+          format: date-time
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        heading:
+          type: number
+          format: double
+          nullable: true
+        speed:
+          type: number
+          format: double
+          nullable: true
+        speedUnit:
           type: string
           enum:
-          - ORIGIN
-          - DESTINATION
-          - INTERMEDIATE
-        city:
+          - MPH
+          - KPH
+    Error:
+      type: object
+      properties:
+        code:
           type: string
-        state:
+        message:
           type: string
-        postalCode:
+        details:
+          type: array
+          items:
+            type: object
+    ETAWindow:
+      type: object
+      properties:
+        estimatedAt:
           type: string
-        country:
+          format: date-time
+        confidenceLow:
           type: string
-          maxLength: 3
-        appointmentWindow:
-          $ref: '#/components/schemas/TimeWindow'
+          format: date-time
+        confidenceHigh:
+          type: string
+          format: date-time
+        predictedOnTime:
+          type: boolean
+        predictedLateMinutes:
+          type: integer
+          nullable: true
     TimeWindow:
       type: object
       properties:
@@ -469,6 +450,25 @@ components:
         endDateTime:
           type: string
           format: date-time
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     ShipmentId:
       name: shipmentId
