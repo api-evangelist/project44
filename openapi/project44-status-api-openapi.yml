@@ -47,6 +47,15 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    ShipmentId:
+      name: shipmentId
+      in: path
+      required: true
+      description: project44 shipment identifier
+      schema:
+        type: string
+        format: uuid
   responses:
     NotFound:
       description: Resource not found
@@ -97,15 +106,6 @@ components:
           type: array
           items:
             type: object
-  parameters:
-    ShipmentId:
-      name: shipmentId
-      in: path
-      required: true
-      description: project44 shipment identifier
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     oauth2:
       type: oauth2

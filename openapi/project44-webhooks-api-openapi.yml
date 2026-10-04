@@ -76,38 +76,6 @@ paths:
           description: Subscription deleted
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-    WebhookSubscription:
-      type: object
-      properties:
-        id:
-          type: string
-        callbackUrl:
-          type: string
-          format: uri
-        eventTypes:
-          type: array
-          items:
-            type: string
-        status:
-          type: string
-          enum:
-          - ACTIVE
-          - PAUSED
-          - FAILED
-        createDatetime:
-          type: string
-          format: date-time
     WebhookSubscriptionCreate:
       type: object
       required:
@@ -133,6 +101,38 @@ components:
         secret:
           type: string
           description: HMAC secret for webhook signature verification
+    WebhookSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        callbackUrl:
+          type: string
+          format: uri
+        eventTypes:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - PAUSED
+          - FAILED
+        createDatetime:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
   responses:
     BadRequest:
       description: Invalid request
