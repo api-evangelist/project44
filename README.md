@@ -1,4 +1,4 @@
-# project44 (project44)
+# project44
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,55 +66,195 @@
 
 project44 is the supply chain visibility platform that connects, automates, and provides predictive analytics across multimodal shipments worldwide.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/project44/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/project44/refs/heads/main/apis.yml)
+**Areas:** Logistics · Supply Chain Visibility · Tracking · Freight · Multi-Modal
 
-## Tags
+## project44 on APIs.io
 
-- Logistics
-- Supply Chain Visibility
-- Tracking
-- Freight
-- Multi-modal
+Everything profiled for project44 is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/project44/](https://apis.io/providers/project44/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (4)
 
-- **Created:** 2026-05-08
-- **Modified:** 2026-05-19
+- [project44 Shipments API](https://apis.io/apis/project44/project44-shipments-api/) — Shipment tracking and management
+- [project44 Status API](https://apis.io/apis/project44/project44-status-api/) — Shipment status updates
+- [project44 Tracking API](https://apis.io/apis/project44/project44-tracking-api/) — Real-time position and event tracking
+- [project44 Webhooks API](https://apis.io/apis/project44/project44-webhooks-api/) — Webhook subscription management
 
-## APIs
+### Published properties
 
-### project44 API v4
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-project44 API v4 covers shipment tracking, LTL, TL, multimodal services, capacity management, YMS appointments, and webhooks. Production endpoints exist for Americas (na12) and Europe (eu12) regions, with sandbox environments available.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://developers.project44.com/](https://developers.project44.com/)
-- **Base URL:** `https://na12.api.project44.com/api/v4`
+Event-driven and webhook contracts.
 
-#### Tags
+- [project44 Shipment Events API](https://apis.io/asyncapis/project44/project44-shipment-events-asyncapi/)
 
-- Logistics
-- Tracking
-- REST
+#### Event channels (5)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://developers.project44.com/)
-- [Authentication](https://developers.project44.com/authentication)
-- [OpenAPI](openapi/project44-tracking-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/project44-tracking.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/project44-tracking.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [shipment/completed](https://apis.io/channels/project44/shipment-completed/)
+- [shipment/eta-changed](https://apis.io/channels/project44/shipment-eta-changed/)
+- [shipment/exception](https://apis.io/channels/project44/shipment-exception/)
+- [shipment/position-updated](https://apis.io/channels/project44/shipment-position-updated/)
+- [shipment/status-updated](https://apis.io/channels/project44/shipment-status-updated/)
 
-## Common Properties
+#### GraphQL (1)
 
-- [GitHub Organization](https://github.com/project44)
-- [LinkedIn](https://www.linkedin.com/company/project-44)
+GraphQL schemas.
+
+- [Moved to /providers/project44/](https://apis.io/graphqls/project44/project44-graphql/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Project44 Agentic Access](https://apis.io/agentic-access/project44/project44-agentic-access/)
+
+#### JSON Schema (14)
+
+The data models the API reads and writes.
+
+- [Error](https://apis.io/schemas/project44/project44-error/)
+- [ETAWindow](https://apis.io/schemas/project44/project44-etawindow/)
+- [PageInfo](https://apis.io/schemas/project44/project44-pageinfo/)
+- [Position](https://apis.io/schemas/project44/project44-position/)
+- [project44 Shipment](https://apis.io/schemas/project44/project44-shipment/)
+- [ShipmentCreate](https://apis.io/schemas/project44/project44-shipmentcreate/)
+- [ShipmentDetail](https://apis.io/schemas/project44/project44-shipmentdetail/)
+- [ShipmentException](https://apis.io/schemas/project44/project44-shipmentexception/)
+- [ShipmentStop](https://apis.io/schemas/project44/project44-shipmentstop/)
+- [ShipmentStopInput](https://apis.io/schemas/project44/project44-shipmentstopinput/)
+- [StatusUpdate](https://apis.io/schemas/project44/project44-statusupdate/)
+- [TimeWindow](https://apis.io/schemas/project44/project44-timewindow/)
+- [WebhookSubscription](https://apis.io/schemas/project44/project44-webhooksubscription/)
+- [WebhookSubscriptionCreate](https://apis.io/schemas/project44/project44-webhooksubscriptioncreate/)
+
+#### JSON Structure (1)
+
+Data models expressed in JSON Structure.
+
+- [Project44 Structure](https://apis.io/json-structure/project44/project44-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Project44 Context](https://apis.io/jsonld/project44/project44-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [project44 Domain Vocabulary](https://apis.io/vocabularies/project44/project44-vocabulary/)
+
+#### Collections (5)
+
+Postman and Open Collection request collections.
+
+- [project44 Tracking Shipments API](https://apis.io/collections/project44/open-project44-shipments-api/)
+- [project44 Tracking Shipments Status API](https://apis.io/collections/project44/open-project44-status-api/)
+- [project44 Tracking API](https://apis.io/collections/project44/open-project44-tracking/)
+- [project44 Shipments Tracking API](https://apis.io/collections/project44/open-project44-tracking-api/)
+- [project44 Tracking Shipments Webhooks API](https://apis.io/collections/project44/open-project44-webhooks-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [project44 — asyncapi rules](https://apis.io/rules/project44/project44-asyncapi-spectral-rules/)
+- [project44 — jsonschema rules](https://apis.io/rules/project44/project44-jsonschema-spectral-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Project44 Authentication](https://apis.io/security/project44/project44-authentication/)
+- [Project44 Domain Security](https://apis.io/security/project44/project44-domain-security/)
+- [Project44 Trust Center](https://apis.io/security/project44/project44-trust-center/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Project44 Scopes](https://apis.io/scopes/project44/project44-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Project44 Plans Pricing](https://apis.io/plans/project44/project44-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Project44 Rate Limits](https://apis.io/rate-limits/project44/project44-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Project44 Finops](https://apis.io/finops/project44/project44-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.project44.com/)
 - [Documentation](https://developers.project44.com/)
-- [Plans](plans/project44-plans-pricing.yml)
-- [Rate Limits](rate-limits/project44-rate-limits.yml)
-- [Fin Ops](finops/project44-finops.yml)
+- [Blog](https://www.project44.com/feed/)
+- [GitHub](https://github.com/project44)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 30.0** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 61.0 |
+| Contract governance | 13.6 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 11.9 |
+| Access clarity | 13.2 |
+
+**Agent readiness 21.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 31.4** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/project44/](https://apis.io/providers/project44/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for project44: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/project44/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
